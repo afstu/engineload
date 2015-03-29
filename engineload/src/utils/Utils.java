@@ -17,7 +17,7 @@ public class Utils {
 	 * @throws 
 	 */
 	public void log(Object aMsg){
-		System.out.println(getTimeStamp() + String.valueOf(aMsg));
+		System.out.println(getTimeStamp() + " : " + String.valueOf(aMsg));
 	}
 	
 	private String getTimeStamp() {

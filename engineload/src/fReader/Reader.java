@@ -6,7 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+
 import utils.*;
 
 public class Reader {
@@ -14,34 +16,49 @@ public class Reader {
 	final static String FILE_NAME = "/home/andrew/test.ini";
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 	
+	Utils u = new Utils();
 	
-	public static void main(String[] args) {
-	
-		Utils u = new Utils();
+	public Reader() {
 		
-		String host = "";
+	}
+
+	public List<String> getPersistenceNodeFromConf() {
+
+		
+		List<String> hostPath = new ArrayList<String>();
 		
 		try {
 			List<String> lines = readSmallTextFile(FILE_NAME);
 			
 			for (String line : lines) {
+				
 				if (line.startsWith("#")) {
-					continue;		
+					continue;
 				}
 				
-			u.log(new String("I read : " + line));
-			host = line;
-			
-				u.pinger(host);
+					if (line.startsWith("NODE")) {
+						String[] parts = line.split(":");
+						hostPath.add(parts[1]);					
+					}
+					
+					if (line.startsWith("PATH")) {
+						String[] parts = line.split(":");
+						hostPath.add(parts[1]);					
+					}
+				}
 				
-			}
+				u.pinger(hostPath.get(0));
+				
+				return hostPath;
+				
 		} catch (IOException e) {
-			u.log(new String("Something is wrong with : " + FILE_NAME));
+			u.log("Something is wrong with : " + FILE_NAME);
 			e.printStackTrace();
-		}  
+		}
+		return null;
 	}
 	
-	  private static List<String> readSmallTextFile(String aFileName) throws IOException {
+	  private List<String> readSmallTextFile(String aFileName) throws IOException {
 		    Path path = Paths.get(aFileName);
 		    
 		    return Files.readAllLines(path, ENCODING);
