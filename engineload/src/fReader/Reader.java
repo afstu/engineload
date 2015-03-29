@@ -36,7 +36,6 @@ public class Reader {
 				if (line.startsWith("#")) {
 					continue;
 				}
-				
 					if (line.startsWith("NODE")) {
 						String[] parts = line.split(":");
 						hostPath.add(parts[1]);					
@@ -48,9 +47,9 @@ public class Reader {
 					}
 				}
 				
-				u.pinger(hostPath.get(0));
-				
-				return hostPath;
+			u.pinger(hostPath.get(0));
+			
+			return hostPath;
 				
 		} catch (IOException e) {
 			u.log("Something is wrong with : " + FILE_NAME);

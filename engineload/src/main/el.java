@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hyperic.sigar.SigarException;
 
@@ -24,8 +25,11 @@ public class el {
 	private static void getPersistenceNode() {
 		
 		try {
-			String myHost = r.getPersistenceNodeFromConf().get(0);
-			String myPath = r.getPersistenceNodeFromConf().get(1);
+			
+			List<String> myInfo = r.getPersistenceNodeFromConf();
+			
+			String myHost = myInfo.get(0);
+			String myPath = myInfo.get(1);
 			
 			if (!myHost.isEmpty() && !myPath.isEmpty()) {
 				u.log("I will log to : " + myHost + " : " + myPath);
@@ -41,7 +45,7 @@ public class el {
 			throws SigarException, InterruptedException {
 		for ( int i = 0 ; i < 10 ; i++ ) {
 			u.log("My load is : " + l.getCPU());
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		}
 	}
 
