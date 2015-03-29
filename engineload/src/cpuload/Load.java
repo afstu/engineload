@@ -16,9 +16,9 @@ public class Load {
 
 	public double getCPU() throws SigarException {
 		
-		double load = s.getCpuPerc().getCombined();
+		double load = Math.round(s.getCpuPerc().getCombined() * 100);
 		
-		return Math.round(load);
+		return load;
 		
 	}
 	

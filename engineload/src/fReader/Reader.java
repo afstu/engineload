@@ -13,7 +13,8 @@ import utils.*;
 
 public class Reader {
 
-	final static String FILE_NAME = "/home/andrew/test.ini";
+	// final static String FILE_NAME = "/home/andrew/test.ini";
+	final static String FILE_NAME = "C:\\Users\\Andrew\\Dropbox\\Eclipse\\conf\\load.ini";
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 	
 	Utils u = new Utils();
@@ -53,7 +54,6 @@ public class Reader {
 				
 		} catch (IOException e) {
 			u.log("Something is wrong with : " + FILE_NAME);
-			e.printStackTrace();
 		}
 		return null;
 	}
