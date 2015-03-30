@@ -52,7 +52,7 @@ public class cpuLoad implements Runnable {
 				}
 			}
 			
-			u.log("The CPU load is : " + max);
+			u.log("The CPU load is : " + (int) max);
 		}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
