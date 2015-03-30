@@ -14,18 +14,18 @@ import utils.*;
 public class Reader {
 
 	// final static String FILE_NAME = "/home/andrew/test.ini";
-	final static String FILE_NAME = "C:\\Users\\Andrew\\Dropbox\\Eclipse\\conf\\load.ini";
+	// final static String FILE_NAME = "C:\\Users\\Andrew\\Dropbox\\Eclipse\\conf\\load.ini";
+	// final static String FILE_NAME = "C:\\Users\\z752c41\\Apps\\conf\\load.ini";
+	final static String FILE_NAME = "/home/gsadmin/conf/load.ini";
 	final static Charset ENCODING = StandardCharsets.UTF_8;
-	
-	Utils u = new Utils();
-	
+		
+
 	public Reader() {
 		
 	}
 
-	public List<String> getPersistenceNodeFromConf() {
+	public List<String> getPersistenceNodeFromConf(Utils u) {
 
-		
 		List<String> hostPath = new ArrayList<String>();
 		
 		try {

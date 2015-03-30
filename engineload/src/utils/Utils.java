@@ -21,7 +21,7 @@ public class Utils {
 	}
 	
 	private String getTimeStamp() {
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS").format(new Date());
 		return timeStamp;
 	}
 
