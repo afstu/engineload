@@ -1,25 +1,29 @@
 package load;
 
+import logger.LogToGraphite;
+
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
 import utils.Utils;
 
-public class cpuLoad implements Runnable {
+public class CpuLoad implements Runnable {
 
 	Sigar s;
 	Utils u;
 	Thread t;
 	String threadName;
+	LogToGraphite lg;
 	
-	public cpuLoad(String name) {
+	public CpuLoad(String name) {
 		threadName = name;
 	}
 
-	public void start() {
+	public void start(LogToGraphite lg, Utils u) {
 		
-		u = new Utils();
+		this.u = u;
 		s = new Sigar();
+		this.lg = lg;
 		
 		if (t == null) {
 			t = new Thread(this, threadName);
@@ -52,7 +56,7 @@ public class cpuLoad implements Runnable {
 				}
 			}
 			
-			u.log("The CPU load is : " + (int) max);
+			lg.buildMetricAndWrite((int) max, "CPU");
 		}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

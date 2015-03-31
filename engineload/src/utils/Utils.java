@@ -11,33 +11,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Utils {
 
-	Boolean win = false;
-	Boolean lin = false;
-	Boolean sol = false;
-	Boolean hasNvidia = false;
+	private Boolean win = false;
+	private Boolean lin = false;
+	private Boolean sol = false;
+	private Boolean hasNvidia = false;
 	
-	final String WIN_SMI = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe";
-	final String WIN_SMI_NUMGPU = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe -L";
-	final String WIN_SMI_LOADGPU = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe -i";
-	final String LIN_SMI = "/usr/bin/nvidia-smi";
-	final String LIN_SMI_NUMGPU = "/usr/bin/nvidia-smi -L";
-	final String LIN_SMI_LOADGPU = "/usr/bin/nvidia-smi -i";
-	final String WIN_PING = "ping -n 1";
-	final String LIN_PING = "ping -c 1";
+	private final String WIN_SMI = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe";
+	private final ArrayList<String> WIN_SMI_NUMGPU = new ArrayList<String>(Arrays.asList("C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe", "-L"));
+	private final ArrayList<String> WIN_SMI_LOADGPU = new ArrayList<String>(Arrays.asList("C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe", "-i"));
+	private final String LIN_SMI = "/usr/bin/nvidia-smi";
+	private final ArrayList<String> LIN_SMI_NUMGPU = new ArrayList<String>(Arrays.asList("/usr/bin/nvidia-smi", "-L"));
+	private final ArrayList<String> LIN_SMI_LOADGPU = new ArrayList<String>(Arrays.asList("/usr/bin/nvidia-smi", "-i"));
+	private final ArrayList<String> WIN_PING = new ArrayList<String>(Arrays.asList("ping", "-n", "1"));
+	private final ArrayList<String> LIN_PING = new ArrayList<String>(Arrays.asList("ping", "-c", "1"));
 	
-	final String CONF_FILE = "conf/load.ini";
-	final String LIBS_DIR = "libs/";
+	private final String CONF_FILE = "conf/load.ini";
+	private final String LIBS_DIR = "libs/";
 	
-	final Charset ENCODING = StandardCharsets.UTF_8;
+	private final Charset ENCODING = StandardCharsets.UTF_8;
 	
 	public Utils() {
-	
+		
 	}
 	
 	public void setUpEnvironment() {
@@ -46,9 +47,8 @@ public class Utils {
 		checkConfLibs();
 		setLocalOs();
 		getNvidia();	
-		getNodeAndPathFromConf();
 		
-		log("Complete. Running load monitor...");
+		log("Detection complete...");
 	}
 
 	public String getConfFile() {
@@ -60,19 +60,19 @@ public class Utils {
 	public String getWIN_SMI() {
 		return WIN_SMI;
 	}
-	public String getWIN_SMI_NUMGPU() {
+	public List<String> getWIN_SMI_NUMGPU() {
 		return WIN_SMI_NUMGPU;
 	}
-	public String getWIN_SMI_LOADGPU() {
+	public List<String> getWIN_SMI_LOADGPU() {
 		return WIN_SMI_LOADGPU;
 	}
 	public String getLIN_SMI() {
 		return LIN_SMI;
 	}
-	public String getLIN_SMI_NUMGPU() {
+	public List<String> getLIN_SMI_NUMGPU() {
 		return LIN_SMI_NUMGPU;
 	}
-	public String getLIN_SMI_LOADGPU() {
+	public List<String> getLIN_SMI_LOADGPU() {
 		return LIN_SMI_LOADGPU;
 	}
 	public Boolean getWin() {
@@ -99,11 +99,11 @@ public class Utils {
 	private void setSol(Boolean sol) {
 		this.sol = sol;
 	}
-	public String getWIN_PING() {
+	public List<String> getWIN_PING() {
 		return WIN_PING;
 	}
 
-	public String getLIN_PING() {
+	public List<String> getLIN_PING() {
 		return LIN_PING;
 	}
 	
@@ -127,11 +127,15 @@ public class Utils {
 		 	
 		 	if (osName.startsWith("Linux")) {
 		 		setLin(true);
-		 	} else if (osName.startsWith("Windows")) {
-		 		setWin(true);
-		 	} else {
-		 		setSol(true);
 		 	}
+		 	
+		 	if (osName.startsWith("Windows")) {
+		 		setWin(true);
+		 		}
+		 	
+		 	if (osName.startsWith("Solaris")) {
+		 		setSol(true);
+		 		}
 	}
 	
 	private void getNvidia() {
@@ -156,7 +160,7 @@ public class Utils {
 		return timeStamp;
 	}
 	
-	private String getEpochTimeStamp () {
+	public String getEpochTimeStamp () {
 		Calendar currenttime = Calendar.getInstance();
 		
 		long time = currenttime.getTime().getTime() / 1000;
@@ -169,22 +173,25 @@ public class Utils {
 	 * @throws IOException
 	 * @throws InterruptedException 
 	 */
-	private void pinger(String host) throws IOException, InterruptedException {
+	public void pinger(String host) throws IOException, InterruptedException {
 		
-		ArrayList<String> command = new ArrayList<String>();
+		List<String> command = null;
 		
 		try { 	
 		 	if (getLin() || getSol()) {
-				command.add(getLIN_PING());
+				command = getLIN_PING();
 				command.add(host);
-		 	} else if (getWin()) {
-				command.add(getWIN_PING());
+		 	}
+		 	
+		 	if (getWin()) {
+				command = getWIN_PING();
 				command.add(host);
 		 	}	
 		 	
 			Process p = new ProcessBuilder(command).start();
 			int val = p.waitFor();
 			
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader stdErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			
 			String result;
@@ -194,16 +201,20 @@ public class Utils {
 				log(result);
 			}
 			
+			stdIn.close();
+			stdErr.close();
+			
 			log( val == 0 ? "I can ping " + host : "I can not ping " + host); 
 		 	
 		} catch (Exception e) {
 			log("Something went wrong trying to ping " + host);
 			log("Exiting...");
+			log(e);
 			System.exit(1);
 		}
 	}
 	
-	private List<String> getNodeAndPathFromConf() {
+	public List<String> getNodePortPathFromConf() {
 
 		List<String> hostPath = new ArrayList<String>();
 		
@@ -216,6 +227,11 @@ public class Utils {
 					continue;
 				}
 					if (line.startsWith("NODE")) {
+						String[] parts = line.split(":");
+						hostPath.add(parts[1]);					
+					}
+					
+					if (line.startsWith("PORT")) {
 						String[] parts = line.split(":");
 						hostPath.add(parts[1]);					
 					}
