@@ -1,7 +1,7 @@
 package main;
 
-import cpuload.cpuLoad;
-import gpuload.gpuLoad;
+import load.cpuLoad;
+import load.gpuLoad;
 import utils.Utils;
 
 public class el {

@@ -1,4 +1,4 @@
-package cpuload;
+package load;
 
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
