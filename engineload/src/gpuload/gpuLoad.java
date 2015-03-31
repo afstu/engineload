@@ -11,48 +11,19 @@ import utils.Utils;
 
 public class gpuLoad implements Runnable {
 	
-	final static String WIN_SMI = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe";
-	final static String LIN_SMI = "/usr/bin/nvidia-smi";
-	
 	Thread t;
 	Utils u;
 	String threadName;
-	Boolean win = false;
-	Boolean lin = false;
 	
 	public gpuLoad(String name) {
 		
-		threadName = name;
-		
+		threadName = name;	
 	}
 		
 	public void start() {
 		
 		u = new Utils();
 		
-		try {
-		 	String osName= System.getProperty("os.name");
-		 	
-		 	if (osName.startsWith("Linux")) {
-		 		lin = true;
-		 	} else if (osName.startsWith("Windows")) {
-		 		win = true;
-		 	}	
-		} catch (Exception e) {
-			 System.out.println("Exception caught ="+e.getMessage());
-		}
-		
-		if (lin && new File(LIN_SMI).isFile() ) {
-			u.log("I see a Linux nvidia-smi!");
-			runThread();
-			}
-		else if (win && new File(WIN_SMI).isFile() ) {
-			u.log("I see a Windows nvidia-smi!");
-			runThread();
-			}
-		else {
-			return;
-		}
 	}
 
 	@Override
@@ -108,24 +79,13 @@ public class gpuLoad implements Runnable {
 		Process p = null;
 		ArrayList<String> gpus = new ArrayList<String>(); 		
 		
-		if (lin) {
-			
-			ArrayList<String> command = new ArrayList<String>();
-			command.add(LIN_SMI);
-			command.add("-L");
-			
-			p = new ProcessBuilder(command).start();
+		if (u.getLin()) {
+			p = new ProcessBuilder(u.getLIN_SMI_NUMGPU()).start();
 		}
 		
-		if (win) {
-			
-			ArrayList<String> command = new ArrayList<String>();
-			command.add(WIN_SMI);
-			command.add("-L");
-			
-			p = new ProcessBuilder(command).start();
+		if (u.getWin()) {
+			p = new ProcessBuilder(u.getWIN_SMI_LOADGPU()).start();
 		}
-		
 		
 		try {
 			int code = p.waitFor();
@@ -161,21 +121,19 @@ public class gpuLoad implements Runnable {
 		
 		for (int gpu = 0; gpu < num; gpu++) {
 		
-			if (lin) {
+			if (u.getLin()) {
 				
 				ArrayList<String> command = new ArrayList<String>();
-				command.add(LIN_SMI);
-				command.add("-i");
+				command.add(u.getLIN_SMI_LOADGPU());
 				command.add(String.valueOf(gpu));
 				
 				p = new ProcessBuilder(command).start();
 			}
 			
-			if (win) {
+			if (u.getWin()) {
 				
 				ArrayList<String> command = new ArrayList<String>();
-				command.add(WIN_SMI);
-				command.add("-i");
+				command.add(u.getWIN_SMI_LOADGPU());
 				command.add(String.valueOf(gpu));
 								
 				p = new ProcessBuilder(command).start();
@@ -200,10 +158,8 @@ public class gpuLoad implements Runnable {
 					
 				String temp = line.trim().replaceAll("\\s+", "\t");
 				String[] load = temp.split("\t");
-					
-				int myLoad = (int) (Math.random() * 100);
-					
-				if (myLoad > 80) {
+				
+				if (!load[12].equalsIgnoreCase("0%")) {
 					gpuLoad[gpu] = 1;
 				}
 				
