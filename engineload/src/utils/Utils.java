@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -115,11 +117,16 @@ public class Utils {
 	private void checkConfLibs() {
 		try {
 			if (new File(getConfFile()).isFile()) {
-				log("I have a configuration file...");
+				// log("I have a configuration file...");
+				
+			} else {
+				log("Bad configuration file..." + getConfFile());
 			}
 			
 			if(new File(getLibsDir()).isFile()) {
-				log("I have a libs directory...");
+				// log("I have a libs directory...");
+			} else {
+				log("Bad libs dir..." + getLibsDir());
 			}
 		} catch (Exception e) {
 			log("There is a problem accessing the configuration file " + getConfFile() + " or the library directory " + getLibsDir() );
@@ -224,7 +231,7 @@ public class Utils {
 		}
 	}
 	
-	public List<String> getNodePortPathFromConf() {
+	public List<String> getNodePortPathEnvFromConf() {
 
 		List<String> hostPath = new ArrayList<String>();
 		
@@ -250,6 +257,16 @@ public class Utils {
 						String[] parts = line.split(":");
 						hostPath.add(parts[1]);					
 					}
+					
+					if (line.startsWith("CLUSTER")) {
+						String[] parts = line.split(":");
+						hostPath.add(parts[1]);					
+					}
+					
+					if (line.startsWith("ENV")) {
+						String[] parts = line.split(":");
+						hostPath.add(parts[1]);					
+					}
 				}
 				
 			return hostPath;
@@ -261,6 +278,21 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	public String getMyHostName() {
+		
+		String name = "foo";
+		
+		try {
+			name =  InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			log("I can't get my own hostname!");
+			log("Exiting...");
+			System.exit(1);
+		}
+		return name;
+	}
+	
 	
 	  private List<String> readSmallTextFile(String aFileName) throws IOException {
 		    Path path = Paths.get(aFileName);

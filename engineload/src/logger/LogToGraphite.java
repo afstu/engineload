@@ -17,18 +17,24 @@ public class LogToGraphite {
 		
 		this.u = u;
 		
-		hostPath = u.getNodePortPathFromConf();
+		hostPath = u.getNodePortPathEnvFromConf();
 			
 		u.pinger(hostPath.get(0));
-
-		u.log("My graphite path is : " + hostPath.get(2));
 		
 	}
+
+
 	
 	public void buildMetricAndWrite(int metric, String source) {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(hostPath.get(2)).append(".").append(source).append(" ").append(metric).append(" ").append(u.getEpochTimeStamp()).append("\n");
+		sb.append(hostPath.get(2)).append(".").append(hostPath.get(3)).append(".").append(hostPath.get(4))
+		
+		.append(".").append(u.getMyHostName()).append(".").append(source).append(" ").append(metric)
+		
+		.append(" ").append(u.getEpochTimeStamp()).append("\n");
+		
+		// u.log(sb.toString());
 		
 		writeGraphite(sb.toString());
 	}
