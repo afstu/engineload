@@ -31,6 +31,7 @@ public class Utils {
 	private final ArrayList<String> LIN_SMI_LOADGPU = new ArrayList<String>(Arrays.asList("/usr/bin/nvidia-smi", "-i"));
 	private final ArrayList<String> WIN_PING = new ArrayList<String>(Arrays.asList("ping", "-n", "1"));
 	private final ArrayList<String> LIN_PING = new ArrayList<String>(Arrays.asList("ping", "-c", "1"));
+	private final ArrayList<String> SOL_PING = new ArrayList<String>(Arrays.asList("/usr/sbin/ping"));
 	
 	private final String CONF_FILE = "conf/load.ini";
 	private final String LIBS_DIR = "libs/";
@@ -107,6 +108,10 @@ public class Utils {
 		return LIN_PING;
 	}
 	
+	public ArrayList<String> getSOL_PING() {
+		return SOL_PING;
+	}
+	
 	private void checkConfLibs() {
 		try {
 			if (new File(getConfFile()).isFile()) {
@@ -133,7 +138,7 @@ public class Utils {
 		 		setWin(true);
 		 		}
 		 	
-		 	if (osName.startsWith("Solaris")) {
+		 	if (osName.startsWith("SunOS")) {
 		 		setSol(true);
 		 		}
 	}
@@ -178,7 +183,7 @@ public class Utils {
 		List<String> command = null;
 		
 		try { 	
-		 	if (getLin() || getSol()) {
+		 	if (getLin()) {
 				command = getLIN_PING();
 				command.add(host);
 		 	}
@@ -187,6 +192,11 @@ public class Utils {
 				command = getWIN_PING();
 				command.add(host);
 		 	}	
+		 	
+		 	if (getSol()) {
+		 		command = getSOL_PING();
+		 		command.add(host);
+		 	}
 		 	
 			Process p = new ProcessBuilder(command).start();
 			int val = p.waitFor();
