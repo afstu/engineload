@@ -36,7 +36,7 @@ public class Utils {
 	private final ArrayList<String> SOL_PING = new ArrayList<String>(Arrays.asList("/usr/sbin/ping"));
 	
 	private final String CONF_FILE = "conf/load.ini";
-	private final String LIBS_DIR = "libs/";
+	private final String LIBS_DIR = "libs";
 	
 	private final Charset ENCODING = StandardCharsets.UTF_8;
 	

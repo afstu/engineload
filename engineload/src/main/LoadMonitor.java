@@ -2,6 +2,8 @@ package main;
 
 import java.io.IOException;
 
+import org.hyperic.sigar.SigarException;
+
 import load.CpuLoad;
 import load.GpuLoad;
 import logger.LogToGraphite;
@@ -14,19 +16,18 @@ public class LoadMonitor {
 	static GpuLoad gl;
 	static LogToGraphite lg;
 	
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) throws InterruptedException, IOException, SigarException {
 		
 		u = new Utils();
 		
 		u.setUpEnvironment();
 		lg = new LogToGraphite(u);
 		
-		
 		getSystemCpuGpuLoad();
 	}
 
 	private static void getSystemCpuGpuLoad()
-			throws InterruptedException {
+			throws InterruptedException, SigarException {
 			String cpuName = "cpuLoad";
 						
 			cl = new CpuLoad(cpuName);
