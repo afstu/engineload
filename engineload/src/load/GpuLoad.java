@@ -10,28 +10,14 @@ import java.util.List;
 import logger.LogToGraphite;
 import utils.Utils;
 
-public class GpuLoad implements Runnable {
-
-	Thread t;
-	Utils u;
-	String threadName;
-	LogToGraphite lg;
+public class GpuLoad extends Load {
 
 	public GpuLoad(String name) {
-
-		threadName = name;	
-	}
-
-	public void start(LogToGraphite lg, Utils u) {
-
-		this.u = u;
-		this.lg = lg;	
-
-		runThread();
+		super(name);
 	}
 
 	@Override
-	public void run() {
+	public void getLoad() {
 
 		try {
 
@@ -64,14 +50,6 @@ public class GpuLoad implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-	private void runThread() {
-		if (t == null) {
-			t = new Thread(this, threadName);
-			u.log("Starting load monitor thread..." + t.getName());
-			t.start();
 		}
 	}
 
