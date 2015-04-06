@@ -7,9 +7,6 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import logger.LogToGraphite;
-import utils.Utils;
-
 public class GpuLoad extends Load {
 
 	public GpuLoad(String name) {
@@ -42,7 +39,7 @@ public class GpuLoad extends Load {
 					}
 				}
 
-				lg.buildMetricAndWrite(max, "GPU");
+				buildMetricAndWrite(max, "GPU");
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -98,7 +95,7 @@ public class GpuLoad extends Load {
 		List<String> command = new ArrayList<String>();
 
 		for (int gpu = 0; gpu < num; gpu++) {
-			
+
 			if (u.getLin()) {
 				command = u.getLIN_SMI_LOADGPU();
 			}
@@ -106,11 +103,11 @@ public class GpuLoad extends Load {
 			if (u.getWin()) {
 				command = u.getWIN_SMI_LOADGPU();
 			}
-			
+
 			if (command.size() == 3) {
 				command.remove(2);
 			}
-			
+
 			command.add(String.valueOf(gpu));
 			gpuLoad[gpu] = runSmiForLoad(command);
 		}
