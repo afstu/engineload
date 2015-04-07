@@ -121,12 +121,16 @@ public class Utils {
 				
 			} else {
 				log("Bad configuration file..." + getConfFile());
+				log("Exiting...");
+				System.exit(1);
 			}
 			
-			if(new File(getLibsDir()).isFile()) {
+			if(new File(getLibsDir()).isDirectory()) {
 				// log("I have a libs directory...");
 			} else {
 				log("Bad libs dir..." + getLibsDir());
+				log("Exiting...");
+				System.exit(1);
 			}
 		} catch (Exception e) {
 			log("There is a problem accessing the configuration file " + getConfFile() + " or the library directory " + getLibsDir() );

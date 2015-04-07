@@ -31,6 +31,7 @@ public class LoadMonitor {
 			String gpuName = "gpuLoad";
 			Load gl = new GpuLoad(gpuName);
 			gl.start(u);
+			
 		}
 	}
 }
