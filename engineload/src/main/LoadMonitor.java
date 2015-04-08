@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.hyperic.sigar.SigarException;
@@ -29,11 +30,21 @@ public class LoadMonitor {
 		Load cl = new CpuLoad(cpuName, u);
 		cl.start();
 
-		if (u.getHasNvidia()) {
+		if (getNvidia()) {
 			String gpuName = "gpuLoad";
 			Load gl = new GpuLoad(gpuName, u);
 			gl.start();
 			
 		}
+	}
+	
+	private static boolean getNvidia() {
+		if (u.getLin() && new File(u.getLIN_SMI()).isFile() ) {
+			return true;
+		}
+		else if (u.getWin() && new File(u.getWIN_SMI()).isFile() ) {
+			return true;
+		}
+		return false;
 	}
 }

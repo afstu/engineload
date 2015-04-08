@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class Utils {
 	private Boolean win = false;
 	private Boolean lin = false;
 	private Boolean sol = false;
-	private Boolean hasNvidia = false;
 	
 	private final String WIN_SMI = "C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe";
 	private final ArrayList<String> WIN_SMI_NUMGPU = new ArrayList<String>(Arrays.asList("C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe", "-L"));
@@ -35,10 +33,10 @@ public class Utils {
 	private final ArrayList<String> LIN_PING = new ArrayList<String>(Arrays.asList("ping", "-c", "1"));
 	private final ArrayList<String> SOL_PING = new ArrayList<String>(Arrays.asList("/usr/sbin/ping"));
 	
-	private final String CONF_FILE = "O:\\Temp\\Apps\\conf\\load.ini";
-	private final String LIBS_DIR = "O:\\Temp\\Apps\\libs";
-//	private final String CONF_FILE = "conf\\load.ini";
-//	private final String LIBS_DIR = "libs";
+//	private final String CONF_FILE = "O:\\Temp\\Apps\\conf\\load.ini";
+//	private final String LIBS_DIR = "O:\\Temp\\Apps\\libs";
+	private final String CONF_FILE = "conf\\load.ini";
+	private final String LIBS_DIR = "libs";
 	private List<String> hostPath;
 	
 	private final Charset ENCODING = StandardCharsets.UTF_8;
@@ -52,7 +50,6 @@ public class Utils {
 		
 		checkConfLibs();
 		setLocalOs();
-		getNvidia();
 		setHostPath(getNodePortPathEnvFromConf());
 		
 		log("Detection complete...");
@@ -90,12 +87,6 @@ public class Utils {
 	}
 	public Boolean getSol() {
 		return sol;
-	}
-	public Boolean getHasNvidia() {
-		return hasNvidia;
-	}
-	public void setHasNvidia(Boolean hasNvidia) {
-		this.hasNvidia = hasNvidia;
 	}
 	private void setWin(Boolean win) {
 		this.win = win;
@@ -166,14 +157,7 @@ public class Utils {
 		 		}
 	}
 	
-	private void getNvidia() {
-		if (getLin() && new File(getLIN_SMI()).isFile() ) {
-			setHasNvidia(true);
-		}
-		else if (getWin() && new File(getWIN_SMI()).isFile() ) {
-			setHasNvidia(true);
-			}
-	}
+
 	
 	/**
 	 * @param aMsg
@@ -188,13 +172,7 @@ public class Utils {
 		return timeStamp;
 	}
 	
-	public String getEpochTimeStamp () {
-		Calendar currenttime = Calendar.getInstance();
-		
-		long time = currenttime.getTime().getTime() / 1000;
-		
-		return String.valueOf(time);
-	}
+
 	
 	/**
 	 * @param host

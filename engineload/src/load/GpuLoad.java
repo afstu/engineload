@@ -11,6 +11,9 @@ import utils.Utils;
 
 public class GpuLoad extends Load {
 
+	private Process p;
+	private BufferedReader stdOut;
+
 	public GpuLoad(String name, Utils utils) {
 		super(name, utils);
 	}
@@ -47,7 +50,6 @@ public class GpuLoad extends Load {
 	}
 
 	private int getGpuNum() throws IOException {
-		Process p = null;
 		ArrayList<String> gpus = new ArrayList<String>(); 		
 
 		if (u.getLin()) {
@@ -61,21 +63,20 @@ public class GpuLoad extends Load {
 		try {
 			p.waitFor();
 
-			BufferedReader stdOut = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			stdOut = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 			String line;
 
 			while((line = stdOut.readLine()) != null) {
 				gpus.add(line);
-			}
-
-			stdOut.close();
+			} 
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			stdOut.close();
 		}
-		p.destroy();
 		return gpus.size();
 	}
 
@@ -108,40 +109,42 @@ public class GpuLoad extends Load {
 
 			totalGpuLoad += gpuLoad[i]; 
 		}
+
 		return totalGpuLoad;		
 	}
 
 	private int runSmiForLoad(List<String> command) throws IOException {
-		Process p = new ProcessBuilder(command).start();
+		p = new ProcessBuilder(command).start();
 
 		try {
 			p.waitFor();
+
+			LineNumberReader stdOut = new LineNumberReader(new InputStreamReader(p.getInputStream()));
+
+			ArrayList<String> lines = new ArrayList<String>();
+
+			String line;
+
+			while ((line = stdOut.readLine()) != null ) {
+				lines.add(line);
+			}
+
+			line = lines.get(8);
+
+			String temp = line.trim().replaceAll("\\s+", "\t");
+			String[] load = temp.split("\t");
+
+			if (load[12].equalsIgnoreCase("0%")) {
+				return 0;
+			} 
+			return 1;
 		} catch (InterruptedException e) {
 			u.log("Something bad happend while waiting for nvidia-smi to complete!");
 			u.log("Exiting...");
 			System.exit(1);
+		} finally {			
+			stdOut.close();
 		}
-
-		LineNumberReader stdOut = new LineNumberReader(new InputStreamReader(p.getInputStream()));
-
-		ArrayList<String> lines = new ArrayList<String>();
-
-		String line;
-
-		while ((line = stdOut.readLine()) != null ) {
-			lines.add(line);
-		}
-
-		stdOut.close();
-		
-		line = lines.get(8);
-
-		String temp = line.trim().replaceAll("\\s+", "\t");
-		String[] load = temp.split("\t");
-
-		if (load[12].equalsIgnoreCase("0%")) {
-			return 0;
-		} 
-		return 1;
+		return 0;
 	}
 }

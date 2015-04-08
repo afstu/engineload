@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
 import utils.Utils;
 
@@ -12,7 +13,7 @@ public abstract class Load implements Runnable {
 	Utils u;
 	Thread t;
 	String threadName;
-		
+	Calendar currenttime;	
 
 	public Load(String name, Utils utils) {
 		this.threadName = name;
@@ -23,19 +24,19 @@ public abstract class Load implements Runnable {
 		
 		if (t == null) {
 			t = new Thread(this, threadName);
-			
 			t.start();
 		}
 	}
 
 	public void buildMetricAndWrite(int metric, String source) {
+		
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(u.getHostPath().get(2)).append(".").append(u.getHostPath().get(3)).append(".").append(u.getHostPath().get(4))
 
 		.append(".").append(u.getMyHostName()).append(".").append(source).append(" ").append(metric)
 
-		.append(" ").append(u.getEpochTimeStamp()).append("\n");
+		.append(" ").append(getEpochTimeStamp()).append("\n");
 
 		writeGraphite(sb.toString());
 	}
@@ -59,6 +60,13 @@ public abstract class Load implements Runnable {
 		}
 	}
 
+	private String getEpochTimeStamp () {
+		currenttime = Calendar.getInstance();		
+		long time = currenttime.getTime().getTime() / 1000;
+		
+		return String.valueOf(time);
+	}
+	
 	@Override
 	public void run() {
 		getLoad();
