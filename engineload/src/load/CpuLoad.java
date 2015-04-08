@@ -6,13 +6,15 @@ import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
+import utils.Utils;
+
 public class CpuLoad extends Load {
 
 	Sigar s;
 	CpuPerc cpu;
 
-	public CpuLoad(String name) {
-		super(name);
+	public CpuLoad(String name, Utils utils) {
+		super(name, utils);
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class CpuLoad extends Load {
 		this.s = new Sigar();
 		double[] idleCache = new double[12];
 		double load = 0;
-		double idle = 0;
+		// double idle = 0;
 		while (true) {
 
 			for (int i = 0; i < 12; i++) {
@@ -30,7 +32,7 @@ public class CpuLoad extends Load {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				idleCache[i] = cpu.getIdle() * 100;
+				idleCache[i] = cpu.getCombined() * 100;
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
@@ -40,8 +42,8 @@ public class CpuLoad extends Load {
 			}
 
 			Arrays.sort(idleCache);
-			idle = idleCache[idleCache.length-1];
-			load = 100 - idle;
+			load = idleCache[idleCache.length-1];
+			
 			buildMetricAndWrite((int) load, "CPU");
 		}
 	}

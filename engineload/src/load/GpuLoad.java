@@ -7,10 +7,12 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Utils;
+
 public class GpuLoad extends Load {
 
-	public GpuLoad(String name) {
-		super(name);
+	public GpuLoad(String name, Utils utils) {
+		super(name, utils);
 	}
 
 	@Override

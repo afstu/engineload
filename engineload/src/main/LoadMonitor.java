@@ -15,22 +15,24 @@ public class LoadMonitor {
 
 		u = new Utils();
 
-		u.setUpEnvironment();
-
+		u.setUpEnvironment(); 
+		
+		u.pinger(u.getHostPath().get(0));
+		
 		getSystemCpuGpuLoad();
 	}
 
 	private static void getSystemCpuGpuLoad()
-			throws InterruptedException, SigarException, IOException {
+			throws InterruptedException, SigarException, IOException  {
 		String cpuName = "cpuLoad";
-
-		Load cl = new CpuLoad(cpuName);
-		cl.start(u);
+		
+		Load cl = new CpuLoad(cpuName, u);
+		cl.start();
 
 		if (u.getHasNvidia()) {
 			String gpuName = "gpuLoad";
-			Load gl = new GpuLoad(gpuName);
-			gl.start(u);
+			Load gl = new GpuLoad(gpuName, u);
+			gl.start();
 			
 		}
 	}

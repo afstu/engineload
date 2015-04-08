@@ -35,8 +35,11 @@ public class Utils {
 	private final ArrayList<String> LIN_PING = new ArrayList<String>(Arrays.asList("ping", "-c", "1"));
 	private final ArrayList<String> SOL_PING = new ArrayList<String>(Arrays.asList("/usr/sbin/ping"));
 	
-	private final String CONF_FILE = "conf/load.ini";
-	private final String LIBS_DIR = "libs";
+	private final String CONF_FILE = "O:\\Temp\\Apps\\conf\\load.ini";
+	private final String LIBS_DIR = "O:\\Temp\\Apps\\libs";
+//	private final String CONF_FILE = "conf\\load.ini";
+//	private final String LIBS_DIR = "libs";
+	private List<String> hostPath;
 	
 	private final Charset ENCODING = StandardCharsets.UTF_8;
 	
@@ -49,7 +52,8 @@ public class Utils {
 		
 		checkConfLibs();
 		setLocalOs();
-		getNvidia();	
+		getNvidia();
+		setHostPath(getNodePortPathEnvFromConf());
 		
 		log("Detection complete...");
 	}
@@ -112,6 +116,14 @@ public class Utils {
 	
 	public ArrayList<String> getSOL_PING() {
 		return SOL_PING;
+	}
+	
+	public List<String> getHostPath() {
+		return hostPath;
+	}
+
+	public void setHostPath(List<String> hostPath) {
+		this.hostPath = hostPath;
 	}
 	
 	private void checkConfLibs() {
