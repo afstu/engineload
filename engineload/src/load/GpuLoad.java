@@ -17,30 +17,24 @@ public class GpuLoad extends Load {
 
 	@Override
 	public void getLoad() {
-
 		try {
-
-			int loadCache[] = new int[12];
 			int numGpu = getGpuNum();
+			int loadCache[] = new int[12];
 
 			while (true) {
 
 				for (int i = 0; i < 12; i++) {
-
 					loadCache[i] = getGpuLoad(numGpu);
-
 					Thread.sleep(5000);
 				}
 
 				int max = 0;
 
 				for (int i = 0 ; i < loadCache.length ; i++) {
-
 					if ( max < loadCache[i]) {
 						max = loadCache[i];
 					}
 				}
-
 				buildMetricAndWrite(max, "GPU");
 			}
 		} catch (InterruptedException e) {
@@ -53,7 +47,6 @@ public class GpuLoad extends Load {
 	}
 
 	private int getGpuNum() throws IOException {
-
 		Process p = null;
 		ArrayList<String> gpus = new ArrayList<String>(); 		
 
@@ -66,28 +59,23 @@ public class GpuLoad extends Load {
 		}
 
 		try {
-			int code = p.waitFor();
+			p.waitFor();
 
 			BufferedReader stdOut = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			BufferedReader stdErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-			if (code == 0) {
-				String line;
-				while((line = stdOut.readLine()) != null) {
-					gpus.add(line);
-				}
+			String line;
 
-			} else {
-				u.log(stdErr);
+			while((line = stdOut.readLine()) != null) {
+				gpus.add(line);
 			}
 
-			stdErr.close();						
 			stdOut.close();
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		p.destroy();
 		return gpus.size();
 	}
 
@@ -120,7 +108,7 @@ public class GpuLoad extends Load {
 
 			totalGpuLoad += gpuLoad[i]; 
 		}
-		return totalGpuLoad ;		
+		return totalGpuLoad;		
 	}
 
 	private int runSmiForLoad(List<String> command) throws IOException {
@@ -145,7 +133,7 @@ public class GpuLoad extends Load {
 		}
 
 		stdOut.close();
-
+		
 		line = lines.get(8);
 
 		String temp = line.trim().replaceAll("\\s+", "\t");

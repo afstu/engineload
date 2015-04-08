@@ -22,7 +22,7 @@ public class CpuLoad extends Load {
 		this.s = new Sigar();
 		double[] idleCache = new double[12];
 		double load = 0;
-		// double idle = 0;
+
 		while (true) {
 
 			for (int i = 0; i < 12; i++) {
@@ -32,7 +32,9 @@ public class CpuLoad extends Load {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 				idleCache[i] = cpu.getCombined() * 100;
+				
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
