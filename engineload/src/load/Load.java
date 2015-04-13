@@ -52,11 +52,9 @@ public abstract class Load implements Runnable {
 			out.close();
 			soc.close();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			u.log("I can not resolve " + u.getHostPath().get(0) + " !");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			u.log("I can not open a socket!");
 		}
 	}
 

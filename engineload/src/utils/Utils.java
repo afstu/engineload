@@ -35,8 +35,13 @@ public class Utils {
 	
 //	private final String CONF_FILE = "O:\\Temp\\Apps\\conf\\load.ini";
 //	private final String LIBS_DIR = "O:\\Temp\\Apps\\libs";
-	private final String CONF_FILE = "conf\\load.ini";
-	private final String LIBS_DIR = "libs";
+	private final String WIN_CONF_FILE = "O:\\HPCTeam\\Apps\\conf\\load.ini";
+	private final String CONF_FILE = "/home/gsadm/HPCTeam/conf/load.ini";
+	private final String WIN_LIBS_DIR = "O:\\HPCTeam\\Apps\\libs";
+	private final String LIBS_DIR = "/home/gsadm/HPCTeam/libs";
+
+
+
 	private List<String> hostPath;
 	
 	private final Charset ENCODING = StandardCharsets.UTF_8;
@@ -48,15 +53,22 @@ public class Utils {
 	public void setUpEnvironment() {
 		log("Detecting my environment...");
 		
-		checkConfLibs();
 		setLocalOs();
+		checkConfLibs();
 		setHostPath(getNodePortPathEnvFromConf());
 		
 		log("Detection complete...");
 	}
 
+	public String getWIN_CONF_FILE() {
+		return WIN_CONF_FILE;
+	}
+	
 	public String getConfFile() {
 		return CONF_FILE;
+	}
+	public String getWIN_LIBS_DIR() {
+		return WIN_LIBS_DIR;
 	}
 	public String getLibsDir() {
 		return LIBS_DIR;
@@ -119,26 +131,40 @@ public class Utils {
 	
 	private void checkConfLibs() {
 		try {
-			if (new File(getConfFile()).isFile()) {
-				// log("I have a configuration file...");
+			if (getWin()) {
+				if (new File(getWIN_CONF_FILE()).isFile()) {	
+				} else {
+					log("Bad configuration file..." + getWIN_CONF_FILE());
+					log("Exiting...");
+					System.exit(1);
+				}
 				
-			} else {
-				log("Bad configuration file..." + getConfFile());
-				log("Exiting...");
-				System.exit(1);
-			}
-			
-			if(new File(getLibsDir()).isDirectory()) {
-				// log("I have a libs directory...");
-			} else {
-				log("Bad libs dir..." + getLibsDir());
-				log("Exiting...");
-				System.exit(1);
+				if(new File(getWIN_LIBS_DIR()).isDirectory()) {
+					// log("I have a libs directory...");
+				} else {
+					log("Bad libs dir..." + getWIN_LIBS_DIR());
+					log("Exiting...");
+					System.exit(1);
+				}
+				
+			} else if (!getWin()) {
+				if (new File(getConfFile()).isFile()) {	
+				} else {
+					log("Bad configuration file..." + getConfFile());
+					log("Exiting...");
+					System.exit(1);
+				}
+				if(new File(getLibsDir()).isDirectory()) {
+					// log("I have a libs directory...");
+				} else {
+					log("Bad libs dir..." + getLibsDir());
+					log("Exiting...");
+					System.exit(1);
+				}
 			}
 		} catch (Exception e) {
 			log("There is a problem accessing the configuration file " + getConfFile() + " or the library directory " + getLibsDir() );
 		}
-		
 	}
 	
 	private void setLocalOs() {
@@ -156,8 +182,6 @@ public class Utils {
 		 		setSol(true);
 		 		}
 	}
-	
-
 	
 	/**
 	 * @param aMsg
@@ -228,9 +252,14 @@ public class Utils {
 	public List<String> getNodePortPathEnvFromConf() {
 
 		List<String> hostPath = new ArrayList<String>();
+		List<String> lines = new ArrayList<String>();
 		
 		try {
-			List<String> lines = readSmallTextFile(getConfFile());
+			if (getWin()) {
+				lines = readSmallTextFile(getWIN_CONF_FILE());
+			} else {
+				lines = readSmallTextFile(getConfFile());
+			}
 			
 			for (String line : lines) {
 				
@@ -266,7 +295,7 @@ public class Utils {
 			return hostPath;
 				
 		} catch (IOException e) {
-			log("Something is wrong with : " + getConfFile());
+			log("Something is wrong with the configuration file!");
 			log("Exiting...");
 			System.exit(1);
 		}
