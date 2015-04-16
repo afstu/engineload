@@ -36,11 +36,11 @@ public class Utils {
 //	private final String CONF_FILE = "O:\\Temp\\Apps\\conf\\load.ini";
 //	private final String LIBS_DIR = "O:\\Temp\\Apps\\libs";
 	private final String WIN_CONF_FILE = "O:\\HPCTeam\\Apps\\conf\\load.ini";
-	private final String CONF_FILE = "/home/gsadm/HPCTeam/conf/load.ini";
 	private final String WIN_LIBS_DIR = "O:\\HPCTeam\\Apps\\libs";
+	private final String SOL_CONF_FILE = "/opt/datasynapse/HPCTeam/Apps/conf/load.ini";
+	private final String SOL_LIBS_DIR = "/opt/datasynapse/HPCTeam/Apps/libs";
+	private final String CONF_FILE = "/home/gsadm/HPCTeam/conf/load.ini";
 	private final String LIBS_DIR = "/home/gsadm/HPCTeam/libs";
-
-
 
 	private List<String> hostPath;
 	
@@ -128,6 +128,13 @@ public class Utils {
 	public void setHostPath(List<String> hostPath) {
 		this.hostPath = hostPath;
 	}
+	public String getSOL_CONF_FILE() {
+		return SOL_CONF_FILE;
+	}
+
+	public String getSOL_LIBS_DIR() {
+		return SOL_LIBS_DIR;
+	}	
 	
 	private void checkConfLibs() {
 		try {
@@ -147,7 +154,7 @@ public class Utils {
 					System.exit(1);
 				}
 				
-			} else if (!getWin()) {
+			} else if (getLin()) {
 				if (new File(getConfFile()).isFile()) {	
 				} else {
 					log("Bad configuration file..." + getConfFile());
@@ -158,6 +165,20 @@ public class Utils {
 					// log("I have a libs directory...");
 				} else {
 					log("Bad libs dir..." + getLibsDir());
+					log("Exiting...");
+					System.exit(1);
+				}
+			} else {
+				if (new File(getSOL_CONF_FILE()).isFile()) {	
+				} else {
+					log("Bad configuration file..." + getSOL_CONF_FILE());
+					log("Exiting...");
+					System.exit(1);
+				}
+				if(new File(getSOL_LIBS_DIR()).isDirectory()) {
+					// log("I have a libs directory...");
+				} else {
+					log("Bad libs dir..." + getSOL_LIBS_DIR());
 					log("Exiting...");
 					System.exit(1);
 				}
@@ -195,9 +216,7 @@ public class Utils {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS").format(new Date());
 		return timeStamp;
 	}
-	
-
-	
+		
 	/**
 	 * @param host
 	 * @throws IOException
@@ -257,6 +276,8 @@ public class Utils {
 		try {
 			if (getWin()) {
 				lines = readSmallTextFile(getWIN_CONF_FILE());
+			} else if (getSol()) {
+				lines = readSmallTextFile(getSOL_CONF_FILE());
 			} else {
 				lines = readSmallTextFile(getConfFile());
 			}
