@@ -8,7 +8,7 @@ import org.hyperic.sigar.SigarException;
 import load.*;
 import utils.Utils;
 
-public class LoadMonitor {
+public class SystemMetricGatherer {
 
 	static Utils u;
 
