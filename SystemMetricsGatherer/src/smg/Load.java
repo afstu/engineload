@@ -11,12 +11,10 @@ abstract class Load implements Runnable {
 
 	Thread t;
 	Calendar currenttime;	
-	Systeem s;
 	Omgeving o;
 
-	public void start(Systeem s, Omgeving o) throws IOException, InterruptedException {
+	public void start(Omgeving o) throws IOException, InterruptedException {
 		
-		this.s = s;
 		this.o = o;
 		
 		if (t == null) {
@@ -34,7 +32,7 @@ abstract class Load implements Runnable {
 		sb.append(o.getMetricPad()).append(".").append(o.getClusternaam()).append(".").append(o.getStatus())
 		
 		// uit het systeem
-		.append(".").append(s.getSysteemNaam()).append(".")
+		.append(".").append(o.getSysteemnaam()).append(".")
 		
 		// uit de metric
 		.append(metric.getType())
@@ -60,7 +58,6 @@ abstract class Load implements Runnable {
 			soc.close();
 		} catch (UnknownHostException e) {
 			Logger.getAnonymousLogger().warning("I can not resolve " + o.getMetricURL() + " !");
-			Logger.getAnonymousLogger().warning("Check the configuration file " + o.getConfFile() + " !");
 			Logger.getAnonymousLogger().severe("Exiting...");
 			System.exit(1);
 		} catch (IOException e) {

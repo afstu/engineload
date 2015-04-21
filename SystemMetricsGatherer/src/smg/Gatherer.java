@@ -26,7 +26,7 @@ public class Gatherer {
 		logger.info("SMG starting...");
 		
 		s = new Systeem();
-		o = new Omgeving(s.getLocalConf());
+		o = s.bouwOmgeving();
 		
 		try {
 			getSystemLoad();
@@ -41,11 +41,11 @@ public class Gatherer {
 
 	private static void getSystemLoad() throws IOException, InterruptedException {
 		Load cl = new CpuLoad();
-		cl.start(s, o);
+		cl.start(o);
 
-		if (s.heeftGpu()) {
+		if (o.heeftGpu()) {
 			Load gl = new GpuLoad();
-			gl.start(s, o);
+			gl.start(o);
 			
 		}
 	}

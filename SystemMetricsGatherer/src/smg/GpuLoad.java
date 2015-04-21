@@ -54,7 +54,7 @@ public class GpuLoad extends Load {
 	private int getGpuNum() throws IOException {
 		ArrayList<String> gpus = new ArrayList<String>(); 		
 
-		p = new ProcessBuilder(s.getLocalSmi(), "-L").start();
+		p = new ProcessBuilder(o.getSmi(), "-L").start();
 				try {
 			p.waitFor();
 
@@ -81,7 +81,7 @@ public class GpuLoad extends Load {
 
 		for (int gpu = 0; gpu < num; gpu++) {
 
-			command.add(s.getLocalSmi());
+			command.add(o.getSmi());
 			command.add("-i");
 		
 			if (command.size() == 3) {
