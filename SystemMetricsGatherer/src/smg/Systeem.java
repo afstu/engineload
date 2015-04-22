@@ -121,7 +121,7 @@ public class Systeem {
 		}
 	}
 	
-	public void getNodePortPathEnvFromConf() {
+	private void getNodePortPathEnvFromConf() {
 
 		List<String> lines = new ArrayList<String>();
 

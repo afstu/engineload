@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="C:/Users/Andrew/Dropbox/Eclipse/hyperic-sigar-1.6.4/sigar-bin/lib/sigar.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Andrew/Dropbox/Eclipse/hyperic-sigar-1.6.4/sigar-bin/lib/log4j.jar"/>
 	<classpathentry kind="lib" path="src/log4j"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
