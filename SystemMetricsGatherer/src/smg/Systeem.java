@@ -107,9 +107,9 @@ public class Systeem {
 			
 			String name = InetAddress.getLocalHost().getHostName();
 			
-			if (getOsType().equalsIgnoreCase("Windows") && name.contains(".")) {
-				String[] win = name.split(".");
-				name = win[0];
+			if (name.contains(".")) {
+				String[] hostOnly = name.split(".");
+				name = hostOnly[0];
 			}
 			
 			o.setSysteemnaam(name);

@@ -5,13 +5,11 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import org.hyperic.sigar.Cpu;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
 import org.junit.Test;
 
-import smg.CpuLoad;
 
 /**
  * @author Andrew

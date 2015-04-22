@@ -16,11 +16,11 @@ public class GpuLoad extends Load {
 
 	public GpuLoad() {
 		super();
-		metric = new Metric();
+		// metric = new Metric();
 	}
 
 	@Override
-	public void getLoad() {
+	public synchronized void getLoad() {
 		try {
 			int numGpu = getGpuNum();
 			int loadCache[] = new int[12];
@@ -42,7 +42,17 @@ public class GpuLoad extends Load {
 					metric.setType("GPU");
 					metric.setTijdStip(getEpochTimeStamp());
 				}
-				buildMetricAndWrite(metric);
+				
+				while ( ! vector.isEmpty() ) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						Logger.getAnonymousLogger().severe("Something bad happened while waiting for the Vector.");
+						
+					} 
+				}
+				vector.add(0, metric);
+				notifyAll();
 			}
 		} catch (InterruptedException e) {
 			Logger.getAnonymousLogger().severe("Thread was interrupted while running " + GpuLoad.class);
