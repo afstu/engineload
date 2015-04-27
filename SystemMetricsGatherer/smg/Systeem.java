@@ -105,17 +105,21 @@ public class Systeem {
 	public void haalSysteemNaam() {
 		try {
 			String name = InetAddress.getLocalHost().getHostName();
-
+			ArrayList<String> hostOnly = new ArrayList<String>();
+			
 			if (name.contains(".")) {
-				ArrayList<String> hostOnly = new ArrayList<String>();
+				
 				for (String s : name.split("\\.")) {
 				 hostOnly.add(s);
 			}
-			
-				name = hostOnly.get(0);
+				
+				if (!hostOnly.isEmpty()) {
+					name = hostOnly.get(0);
+				} 
+		}
 			
 			o.setSysteemnaam(name);
-		}
+			
 		} catch (UnknownHostException e) {
 			Logger.getAnonymousLogger().severe("I can't get my own hostname!");
 			Logger.getAnonymousLogger().severe("Exiting...");
