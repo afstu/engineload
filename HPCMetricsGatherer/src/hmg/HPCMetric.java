@@ -15,6 +15,7 @@ import com.datasynapse.gridserver.admin.ServiceAdmin;
 import com.datasynapse.gridserver.admin.ServiceInfo;
 import com.datasynapse.gridserver.driver.DriverManager;
 
+
 public class HPCMetric implements Runnable {
 
 	private Thread t;
@@ -22,7 +23,7 @@ public class HPCMetric implements Runnable {
 	private Calendar currenttime;
 	protected Metric m;
 	protected DriverGegevens d;
-	private static DriverManager dm;
+	
 
 	public HPCMetric() {
 
@@ -57,35 +58,34 @@ public class HPCMetric implements Runnable {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	public void getHPCMetric() throws Exception {
 		
 		Properties p = new Properties();
-		dm = new DriverManager();
 
 		long serviceID = 0;
 		String serviceStatus = "";
 		String serviceName = "" ;
 
-		p.put("DSUsername","admin");
-		p.put("DSPassword","admin");
-		p.put("DSPrimaryDirector", "http://192.168.178.104:8000");
-		p.put("DSSecondaryDirector", "http://192.168.178.110:8000");
+		p.put("DSUsername",d.getDriverUser());
+		p.put("DSPassword",d.getDriverPassword());
+		p.put("DSPrimaryDirector", "http://" + d.getHPCDirectorUrl() + ":" + d.getHPCDirectorPoort());
+		p.put("DSLogUseJavaConfig", "true");
+		p.put("DSSecondaryDirector", "http://" + d.getHPCDirectorUrl() + ":" + d.getHPCDirectorPoort());
 
-		//dm.fillDefaults();
-		dm.addProperties(p);			
+		DriverManager.fillDefaults();
+		DriverManager.addProperties(p);			
 
 		while (true) {
 
 			try {
-				dm.connect();
+				DriverManager.connect();
 			} catch (GridServerException g) {
 				// TODO Auto-generated catch block
 				g.printStackTrace();
-				dm.disconnect();
+				DriverManager.disconnect();
 			}
 
-			if (dm.isConnected()) {
+			if (DriverManager.isConnected()) {
 
 				BrokerAdmin ba = AdminManager.getBrokerAdmin();
 
@@ -104,9 +104,9 @@ public class HPCMetric implements Runnable {
 
 
 
-					dm.connect(bi[bn].getName());
+					DriverManager.connect(bi[bn].getName());
 
-					if (dm.isConnected()) {
+					if (DriverManager.isConnected()) {
 
 						try {
 							ServiceAdmin sa = AdminManager.getServiceAdmin();
@@ -163,7 +163,8 @@ public class HPCMetric implements Runnable {
 					}
 				}
 			}
-			dm.disconnect();
+			//DriverManager.disconnect();
+			Thread.sleep(10000);
 		}
 	}
 }

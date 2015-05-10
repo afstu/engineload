@@ -1,16 +1,13 @@
 package hmg;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Vector;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 	/**
 	 * @author Andrew
 	 *
@@ -21,25 +18,38 @@ import java.util.Vector;
 		public static Metric m;
 		public static GraphiteGegevens gg;
 		public static ArrayList<DriverGegevens> dg;
-		final static Logger logger = LogManager.getLogger(Gatherer.class);
 		private final static int SIZE = 20;
+		final static Logger logger = Logger.getLogger(Gatherer.class.toString());
 		
 		/**
 		 * @param args
 		 */
 		public static void main(String[] args) {
 			
-			
 			v = new Vector<Metric>(SIZE);
 			gg = new GraphiteGegevens();
 			dg = new ArrayList<DriverGegevens>();
 			
+			DriverGegevens testDrv = new DriverGegevens();
+			
+			testDrv.setHPCDirectorUrl("director1");
+			testDrv.setHPCDirectorPoort(8000);
+			testDrv.setDriverUser("admin");
+			testDrv.setDriverPassword("admin");
+			
+			dg.add(testDrv);
+			
+			gg.setGraphitePad("SE.HPC.kvm.D." + testDrv.getHPCDirectorUrl());
+			gg.setGraphiteUrl("graphite");
+			gg.setGraphitePoort(2003);
+						
+			
 			try {
 				startMetricVerzamelen();
 			} catch (InterruptedException e) {
-				logger.warn("Thread was interrupted while trying to get HPC metrics!");
+				logger.log(Level.SEVERE,"Thread was interrupted while trying to get HPC metrics!");
 			} catch (IOException e) {
-				logger.error("HMG encountered an IO exception!");
+				logger.log(Level.SEVERE,"HMG encountered an IO exception!");
 				System.exit(1);
 			}
 
@@ -48,7 +58,8 @@ import java.util.Vector;
 					haalMetricUitVector();
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
-					logger.warn("Something bad happened while waiting for HPC metrics.");			}
+					logger.log(Level.SEVERE,"Something bad happened while waiting for HPC metrics.");
+				}
 			}
 		}
 
@@ -96,7 +107,7 @@ import java.util.Vector;
 			.append(" ").append(metric.getTijdStip())
 			.append("\n");
 
-			// logger.info(sb.toString());
+			logger.log(Level.SEVERE,sb.toString());
 			verstuurMetric(sb.toString());
 		}
 
@@ -104,20 +115,17 @@ import java.util.Vector;
 			try {
 				int port = gg.getGraphitePoort();
 				Socket soc = new Socket(gg.getGraphiteUrl(),port);
-				PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
-
-				out.println(completeMetric);
-				out.flush();
-				out.close();
+				
+				DataOutputStream dos = new DataOutputStream(soc.getOutputStream());
+				
+				dos.writeBytes(completeMetric);
 				soc.close();
 				
 			} catch (UnknownHostException e) {
-				logger.warn("I can not resolve " + gg.getGraphiteUrl() + " !");
-				logger.warn("Exiting...");
+				logger.log(Level.SEVERE,"I can not resolve " + gg.getGraphiteUrl() + "! Exiting...");
 				System.exit(1);
 			} catch (IOException e) {
-				logger.warn("I can not open a socket to " + gg.getGraphiteUrl() + " on port " + gg.getGraphitePoort());
-				logger.warn("Exiting...");
+				logger.log(Level.SEVERE,"I can not open a socket to " + gg.getGraphiteUrl() + " on port " + gg.getGraphitePoort() + " Exiting...");
 				System.exit(1);
 			}
 		}
