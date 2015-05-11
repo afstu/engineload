@@ -1,10 +1,12 @@
 package hmg;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Properties;
-import java.util.Vector;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import com.datasynapse.gridserver.GridServerException;
 import com.datasynapse.gridserver.admin.AdminManager;
 import com.datasynapse.gridserver.admin.BrokerAdmin;
@@ -19,21 +21,20 @@ import com.datasynapse.gridserver.driver.DriverManager;
 public class HPCMetric implements Runnable {
 
 	private Thread t;
-	protected Vector<Metric> vector;
+	private ConcurrentLinkedQueue<Metric> queue;
 	private Calendar currenttime;
 	protected Metric m;
 	protected DriverGegevens d;
-	
+	protected List<Metric> metricList;
 
 	public HPCMetric() {
 
 	}
 
-	public void start(Metric m, DriverGegevens d,  Vector<Metric> vector) throws IOException, InterruptedException {
+	public void start(DriverGegevens d,  ConcurrentLinkedQueue<Metric> queue) throws IOException, InterruptedException {
 
-		this.m = m;		
 		this.d = d;
-		this.vector = vector;
+		this.queue = queue;
 
 		if (t == null) {
 			t = new Thread(this);
@@ -59,7 +60,7 @@ public class HPCMetric implements Runnable {
 	}
 
 	public void getHPCMetric() throws Exception {
-		
+
 		Properties p = new Properties();
 
 		long serviceID = 0;
@@ -73,9 +74,13 @@ public class HPCMetric implements Runnable {
 		p.put("DSSecondaryDirector", "http://" + d.getHPCDirectorUrl() + ":" + d.getHPCDirectorPoort());
 
 		DriverManager.fillDefaults();
-		DriverManager.addProperties(p);			
+		DriverManager.addProperties(p);	
+
+
 
 		while (true) {
+
+			metricList = new ArrayList<Metric>();
 
 			try {
 				DriverManager.connect();
@@ -91,18 +96,24 @@ public class HPCMetric implements Runnable {
 
 				BrokerInfo[] bi = ba.getAllBrokerInfo();
 				int brokerNumber = bi.length;
+				
+
 
 				for (int bn = 0; bn < brokerNumber; bn++) {
 
 					if (bi[bn].isFailover()) {
 						continue;
 					}
+					
+					int pendingTasks =0;
+					int runningTasks =0;
+					int completedTasks =0;
+					int serviceError =0;
 
 					String[] bh = bi[bn].getBaseUrl().split("//");
 					String[] bh2 = bh[1].split(":");
-					String bhfinal = bh2[0];
-
-
+					String[] bh3 = bh2[0].split("\\.");
+					String bhfinal = bh3[0];
 
 					DriverManager.connect(bi[bn].getName());
 
@@ -114,16 +125,13 @@ public class HPCMetric implements Runnable {
 							EngineAdmin ea = AdminManager.getEngineAdmin();
 							EngineInfo[] ei = ea.getAllEngineInfo();
 
-							System.out.println("I am "  + bhfinal );
-							System.out.println("I have "  + bi[bn].getEngineCount() + " total Engines" );
-							System.out.println("I have "  + bi[bn].getBusyEngineCount() + " busy Engines" );
+
+							// Engine Metrics
+							metricList.add(fillMetric(bhfinal, "TotalEngines", bi[bn].getEngineCount()));
+
+							metricList.add(fillMetric(bhfinal, "BusyEngines", bi[bn].getBusyEngineCount()));
 
 							for (ServiceInfo s : si) {
-
-								int pendingTasks =0;
-								int runningTasks =0;
-								int completedTasks =0;
-								int serviceError =0;
 
 
 
@@ -141,13 +149,14 @@ public class HPCMetric implements Runnable {
 									runningTasks += s.getRunningCount();
 									completedTasks += s.getCompletedCount();
 
-									System.out.println("Service " + serviceName + " (" + serviceID + ")" + " has U: " + runningTasks);
-									System.out.println("Service " + serviceName + " (" + serviceID + ")" + " has S: " + pendingTasks);
-									System.out.println("Service " + serviceName + " (" + serviceID + ")" + " has E: " + serviceError);
-									System.out.println("Service " + serviceName + " (" + serviceID + ")" + " has C: " + completedTasks);
 								}
 							}
-
+							
+							// Director Metrics
+							metricList.add(fillMetric(bhfinal, "U", runningTasks));
+							metricList.add(fillMetric(bhfinal, "S", pendingTasks));
+							metricList.add(fillMetric(bhfinal, "E", serviceError));
+							metricList.add(fillMetric(bhfinal, "C", completedTasks));
 
 							for (EngineInfo i : ei) {
 								if (i.isBusy()) {
@@ -156,15 +165,35 @@ public class HPCMetric implements Runnable {
 								}
 							}
 
-
 						} catch ( NullPointerException e) {
 							e.getStackTrace();
 						}
 					}
 				}
 			}
-			//DriverManager.disconnect();
-			Thread.sleep(10000);
+
+			for (Metric m : metricList) {
+				try {
+					queue.add(m);	
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+			}
+			Thread.sleep(60000);
 		}
+	}
+
+	/**
+	 * @param MetricBron
+	 * @param MetricName
+	 * @param Waarde
+	 */
+	private Metric fillMetric(String MetricBron, String MetricName, int Waarde) {
+		m = new Metric();
+		m.setBron(MetricBron);
+		m.setTijdStip(getEpochTimeStamp());
+		m.setType(MetricName);
+		m.setWaarde(Waarde);
+		return m;
 	}
 }

@@ -6,6 +6,7 @@ public class DriverGegevens {
 	private String DriverPassword;
 	private String HPCDirectorUrl;
 	private int HPCDirectorPoort;
+	private String HPCDirectorStatus;
 	
 	
 	public DriverGegevens() {
@@ -47,6 +48,14 @@ public class DriverGegevens {
 
 	public void setHPCDirectorPoort(int hPCDirectorPoort) {
 		HPCDirectorPoort = hPCDirectorPoort;
+	}
+
+	public String getHPCDirectorStatus() {
+		return HPCDirectorStatus;
+	}
+
+	public void setHPCDirectorStatus(String string) {
+		HPCDirectorStatus = string;
 	}	
 	
 }
