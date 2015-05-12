@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 public class Gatherer {
 
-	private final static int SIZE = 4;
 	final static Logger logger = Logger.getLogger(Gatherer.class.toString());
 
 	/**

@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.datasynapse.gridserver.GridServerException;
 import com.datasynapse.gridserver.admin.AdminManager;
 import com.datasynapse.gridserver.admin.BrokerAdmin;
@@ -76,8 +79,6 @@ public class HPCMetric implements Runnable {
 		DriverManager.fillDefaults();
 		DriverManager.addProperties(p);	
 
-
-
 		while (true) {
 
 			metricList = new ArrayList<Metric>();
@@ -96,15 +97,13 @@ public class HPCMetric implements Runnable {
 
 				BrokerInfo[] bi = ba.getAllBrokerInfo();
 				int brokerNumber = bi.length;
-				
-
 
 				for (int bn = 0; bn < brokerNumber; bn++) {
 
 					if (bi[bn].isFailover()) {
 						continue;
 					}
-					
+
 					int pendingTasks =0;
 					int runningTasks =0;
 					int completedTasks =0;
@@ -120,26 +119,35 @@ public class HPCMetric implements Runnable {
 					if (DriverManager.isConnected()) {
 
 						try {
+
+							// Datasynapse Classes
 							ServiceAdmin sa = AdminManager.getServiceAdmin();
 							ServiceInfo[] si = sa.getAllServiceInfo();	
 							EngineAdmin ea = AdminManager.getEngineAdmin();
 							EngineInfo[] ei = ea.getAllEngineInfo();
 
+							// Housekeeping lists Engine and Session data
+							List<ServiceData> serviceDataList = new ArrayList<ServiceData>();
+							List<EngineData> engineDataList = new ArrayList<EngineData>();
 
 							// Engine Metrics
 							metricList.add(fillMetric(bhfinal, "TotalEngines", bi[bn].getEngineCount()));
-
 							metricList.add(fillMetric(bhfinal, "BusyEngines", bi[bn].getBusyEngineCount()));
 
 							for (ServiceInfo s : si) {
-
-
 
 								if (! s.getFinished() &&  ! s.getCompleted()) {
 
 									serviceName = s.getServiceName();
 									serviceID = s.getServiceId();
 									serviceStatus = s.getStatus();
+
+									ServiceData sd = new ServiceData();
+
+									sd.setSessionID(serviceID);
+									sd.setSessionName(serviceName);
+
+									serviceDataList.add(sd);
 
 									if (serviceStatus.equalsIgnoreCase("Running, Task Errors")) {
 										serviceError = 1;
@@ -148,10 +156,9 @@ public class HPCMetric implements Runnable {
 									pendingTasks += s.getPendingCount();
 									runningTasks += s.getRunningCount();
 									completedTasks += s.getCompletedCount();
-
 								}
 							}
-							
+
 							// Director Metrics
 							metricList.add(fillMetric(bhfinal, "U", runningTasks));
 							metricList.add(fillMetric(bhfinal, "S", pendingTasks));
@@ -161,10 +168,42 @@ public class HPCMetric implements Runnable {
 							for (EngineInfo i : ei) {
 								if (i.isBusy()) {
 
-									System.out.println("Engine " + i.getUsername() + "-" + i.getInstance() + " spent " + i.getElapsedTime() + " millis running Service " + i.getServiceId());
+									EngineData e = new EngineData();
+
+									e.setEngineName(i.getUsername() + "-" + i.getInstance());
+									e.setComputeTime(i.getElapsedTime() / 1000);
+									e.setServiceID(i.getServiceId());
+
+									for (ServiceData s : serviceDataList) {
+										if (s.getSessionID() == e.getServiceID()) {
+											e.setSessionName(s.getSessionName().replaceAll("\\s+", ""));
+										}
+										engineDataList.add(e);
+									}
 								}
 							}
 
+							// get total compute time per session
+							int totalComputeTime = 0;
+							String summedSessionName = null;	
+
+							for (EngineData e : engineDataList) {
+
+								for (ServiceData s : serviceDataList) {
+									String sessionName = s.getSessionName().replaceAll("\\s+", "");
+
+									if (sessionName.equalsIgnoreCase(e.getSessionName())) {
+										totalComputeTime +=  e.getComputeTime();
+									}
+									summedSessionName = sessionName;	
+								}
+							}
+
+							if (summedSessionName != null) {
+								
+								metricList.add(fillMetric(bhfinal + "." + summedSessionName, "ComputeTime	" , totalComputeTime));
+								//Logger.getAnonymousLogger().log(Level.SEVERE, "------------>" + bhfinal + "." + summedSessionName + " ComputeTime " + totalComputeTime);
+							}
 						} catch ( NullPointerException e) {
 							e.getStackTrace();
 						}
