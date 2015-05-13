@@ -184,55 +184,50 @@ public class HPCMetric implements Runnable {
 							}
 
 							// get total compute time per session
-							int totalComputeTime = 0;
-							String summedSessionName = null;	
 
-							for (EngineData e : engineDataList) {
+							for (ServiceData s : serviceDataList) {
 
-								for (ServiceData s : serviceDataList) {
-									String sessionName = s.getSessionName().replaceAll("\\s+", "");
+								int totalComputeTime = 0;								
+								String summedSessionName = s.getSessionName().replaceAll("\\s+", "");	
 
-									if (sessionName.equalsIgnoreCase(e.getSessionName())) {
-										totalComputeTime +=  e.getComputeTime();
-									}
-									summedSessionName = sessionName;	
-								}
-							}
+										for (EngineData e : engineDataList) {
 
-							if (summedSessionName != null) {
-								
-								metricList.add(fillMetric(bhfinal + "." + summedSessionName, "ComputeTime	" , totalComputeTime));
-								//Logger.getAnonymousLogger().log(Level.SEVERE, "------------>" + bhfinal + "." + summedSessionName + " ComputeTime " + totalComputeTime);
+											if (summedSessionName.equalsIgnoreCase(e.getSessionName())) {
+												totalComputeTime +=  e.getComputeTime();
+											}
+										}
+
+								metricList.add(fillMetric(bhfinal + "." + summedSessionName, "ComputeTime" , totalComputeTime));
 							}
 						} catch ( NullPointerException e) {
 							e.getStackTrace();
-						}
 					}
 				}
 			}
-
-			for (Metric m : metricList) {
-				try {
-					queue.add(m);	
-				} catch (NullPointerException e) {
-					e.printStackTrace();
-				}
-			}
-			Thread.sleep(60000);
 		}
-	}
 
-	/**
-	 * @param MetricBron
-	 * @param MetricName
-	 * @param Waarde
-	 */
-	private Metric fillMetric(String MetricBron, String MetricName, int Waarde) {
-		m = new Metric();
-		m.setBron(MetricBron);
-		m.setTijdStip(getEpochTimeStamp());
-		m.setType(MetricName);
-		m.setWaarde(Waarde);
-		return m;
+		for (Metric m : metricList) {
+			try {
+				queue.add(m);	
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+		Thread.sleep(60000);
 	}
+}
+
+/**
+ * @param MetricBron
+ * @param MetricName
+ * @param Waarde
+ */
+private Metric fillMetric(String MetricBron, String MetricName, int Waarde) {
+	m = new Metric();
+	m.setBron(MetricBron);
+	m.setTijdStip(getEpochTimeStamp());
+	m.setType(MetricName);
+	m.setWaarde(Waarde);
+	return m;
+}
 }
