@@ -16,11 +16,11 @@ import java.util.logging.Logger;
 public class Systeem {
 
 	private enum ConfigFiles {
-	//	WIN ("O:\\HPCTeam\\Apps\\conf\\load.ini", "O:\\HPCTeam\\Apps\\libs"),
-		WIN ("conf\\load.ini", "libs"),
+		WIN ("O:\\HPCTeam\\Apps\\conf\\load.ini", "O:\\HPCTeam\\Apps\\libs"),
+	//	WIN ("conf\\load.ini", "libs"),
 		SOL ("/opt/datasynapse/HPCTeam/Apps/conf/load.ini", "/opt/datasynapse/HPCTeam/Apps/libs"),
-	//	LIN ("/home/gsadm/HPCTeam/conf/load.ini", "/home/gsadm/HPCTeam/libs");
-		LIN ("./conf/load.ini", "./libs");
+		LIN ("/home/gsadmin/HPCTeam/Apps/conf/load.ini", "/home/gsadmin/HPCTeam/Apps/libs");
+	//	LIN ("./conf/load.ini", "./libs");
 
 		private final String conf;
 		private final String libs;

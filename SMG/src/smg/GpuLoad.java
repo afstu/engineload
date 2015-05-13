@@ -21,13 +21,14 @@ public class GpuLoad extends Load {
 
 	@Override
 	public synchronized void getLoad() {
+		metric = new Metric();
 		try {
 			int numGpu = getGpuNum();
 			int loadCache[] = new int[12];
 
 			while (true) {
 
-				for (int i = 0; i < 12; i++) {
+				for (int i = 0; i < loadCache.length; i++) {
 					loadCache[i] = getGpuLoad(numGpu);
 					Thread.sleep(5000);
 				}
@@ -38,6 +39,7 @@ public class GpuLoad extends Load {
 					if ( max < loadCache[i]) {
 						max = loadCache[i];
 					}
+					
 					metric.setWaarde(max);
 					metric.setType("GPU");
 					metric.setTijdStip(getEpochTimeStamp());
@@ -87,18 +89,21 @@ public class GpuLoad extends Load {
 	private int getGpuLoad(int num) throws IOException {
 
 		int[] gpuLoad = new int[num];
-		List<String> command = new ArrayList<String>();
-
+	
 		for (int gpu = 0; gpu < num; gpu++) {
 
+			List<String> command = new ArrayList<String>();
+			
 			command.add(o.getSmi());
+			
 			command.add("-i");
-		
+			
 			if (command.size() == 3) {
 				command.remove(2);
 			}
 
 			command.add(String.valueOf(gpu));
+			
 			gpuLoad[gpu] = runSmiForLoad(command);
 		}
 
@@ -129,10 +134,10 @@ public class GpuLoad extends Load {
 			}
 
 			line = lines.get(8);
-
+			
 			String temp = line.trim().replaceAll("\\s+", "\t");
 			String[] load = temp.split("\t");
-
+			
 			if (load[12].equalsIgnoreCase("0%")) {
 				return 0;
 			} 
