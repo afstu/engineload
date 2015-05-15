@@ -1,6 +1,8 @@
 package hmg;
 
-public class Metric {
+import java.util.Comparator;
+
+public class Metric implements Comparator<Metric>, Comparable<Metric> {
 
 	private String TijdStip;
 	private int Waarde;
@@ -51,6 +53,16 @@ public class Metric {
 	public void setMetricPad(String metricPad) {
 		MetricPad = metricPad;
 	}
+		
+	@Override
+	public int compare(Metric m1, Metric m2) {
+		return m1.getType().compareTo(m2.getType());
+	}
 	
-	
+	@Override
+	public int compareTo(Metric m1) {
+		return this.getType().compareTo(m1.getType());
+	}
 }
+
+
