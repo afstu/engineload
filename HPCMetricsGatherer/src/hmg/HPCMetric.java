@@ -237,7 +237,7 @@ public class HPCMetric implements Runnable {
 				}
 			}
 
-			if (counter == 11) {
+			if (counter == 29) {
 
 				finalMetricList = new ArrayList<Metric>();
 
@@ -307,7 +307,7 @@ public class HPCMetric implements Runnable {
 					if (tempList != null) {
 						int finalEngineComputeTime = 0;
 						for (int tls = 0; tls < tempList.size(); tls++) {
-							finalEngineComputeTime = getSumWaarde(tempList.get(tls)); 
+							finalEngineComputeTime = getMaxWaarde(tempList.get(tls)); 
 							finalMetricList.add(fillMetric(arrayListOflistsOfMetricsLists.get(i).get(6).get(0).getBron(), arrayListOflistsOfMetricsLists.get(i).get(6).get(0).getType(), finalEngineComputeTime));
 						}
 					}
@@ -327,7 +327,7 @@ public class HPCMetric implements Runnable {
 				counter++;
 			}
 
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		}
 	}
 
