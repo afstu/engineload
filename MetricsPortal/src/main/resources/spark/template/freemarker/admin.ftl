@@ -45,6 +45,7 @@
             			</ul>
             			</li>
                         <li ><a href="/graphite"><span class="glyphicon glyphicon-cog"> Graphite</a></li>
+                        <li ><a href="/rapporten"><span class="glyphicon glyphicon-stats"> Rapporten</a></li>
                     </ul>
                 </div>
             </div>

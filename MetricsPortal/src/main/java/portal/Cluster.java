@@ -1,6 +1,5 @@
 package portal;
 
-import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
@@ -13,7 +12,7 @@ public class Cluster {
 	private long Id;
 	private String ClusterNaam;
 	private String ClusterStatus;
-//	private String Rol;
+	private String Rol;
 	private String director;
 	private String ClusterBeschrijving;
 
@@ -50,13 +49,13 @@ public class Cluster {
 		ClusterStatus = string;
 	}
 
-//	public String getRol() {
-//		return Rol;
-//	}
-//
-//	public void addRol(String rol) {
-//		this.Rol = rol;
-//	}
+	public String getRol() {
+		return Rol;
+	}
+
+	public void addRol(String rol) {
+		this.Rol = rol;
+	}
 
 	public String getClusterDirector() {
 		return director;

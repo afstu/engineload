@@ -2,15 +2,21 @@ package portal;
 
 import static spark.Spark.*;
 
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -21,8 +27,11 @@ public class MetricsPortal {
 
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 		Session session = sessionFactory.openSession();
-		Logger log = Logger.getLogger("Portal");
+		Logger log = Logger.getLogger("Portal -- ");
 
+		log.info("Setting up Demo Database...");
+		setupDemoDatabase();
+		
 		//
 		// Site Root
 		//
@@ -254,5 +263,82 @@ public class MetricsPortal {
                 response.redirect("/rollen");
                 return "";
         });
+		
+		//
+		// Generic Rapporten
+		//
+		get("/rapporten", (request, response) -> {
+
+			Calendar cal = Calendar.getInstance();
+			Date date = cal.getTime();
+			
+			Map<String, Object> viewObjects = new HashMap<String, Object>();
+
+			// int myId = request.queryParams("gebruiker-id");
+			
+			// SQL for Graphite URL
+			List<Graphite> graphiteUrl = session.createQuery("from Graphite").list();
+						
+			// SQL for Cluster data
+			// SQL to look up which cluster a user can see a user can see
+			
+//			Query clusterData = session.createQuery("select g.RolId, r.RolId, c.RolId, c.ClusterName, c.ClusterStatus, c.director from Cluster as c" + 
+//													"join Rol as r" +
+//													"join Gebruiker as g" +
+//													"where g.id = 'myId' " 
+//													);
+					
+			// Demo	1 hour report	
+			List<Cluster> clusterData = session.createQuery("from Cluster c where c.ClusterNaam='kvm' and c.ClusterStatus='D'").list();
+			
+			ArrayList<Rapport> rapportList = new ArrayList<Rapport>();
+			
+			for (int i = 0; i < clusterData.size(); i++) {
+				
+				Rapport r = new Rapport();
+				r.setGraphiteUrl(graphiteUrl.get(0).getGraphiteUrl());
+					
+				r.setClusterNaam(clusterData.get(i).getClusterNaam());
+				r.setClusterStatus(clusterData.get(i).getClusterStatus());
+				r.setClusterDirector(clusterData.get(i).getClusterDirector());
+				r.setClusterBeschrijving(clusterData.get(i).getClusterBeschrijving());
+						
+				r.setEindTijd(date.getTime());
+				r.setBeginTijd(date.getTime() - 3600 * 1000L);
+				
+				rapportList.add(r);
+			}
+			
+			if (rapportList.size() == 0) {
+				viewObjects.put("hasNoRapporten", "Er zijn geen rapporten!");
+			} else {
+				viewObjects.put("templateName", "rapportList.ftl");
+				viewObjects.put("Rapporten", rapportList);
+			}
+
+			return new ModelAndView(viewObjects, "admin.ftl");
+		}, new FreeMarkerEngine());
+	}
+	
+	static void setupDemoDatabase() {
+		
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		Graphite g = new Graphite();
+		Cluster c = new Cluster();
+		
+		g.setGraphiteUrl("http://graphite");
+		c.setClusterNaam("kvm");
+		c.setClusterStatus("D");
+		c.setClusterDirector("director1");
+		c.setClusterBeschrijving("Demo Cluster!");
+		
+        session.beginTransaction();
+        session.persist(g);
+        session.persist(c);
+        session.getTransaction().commit();
+		session.close();
+		sessionFactory.close();
 	}
 }
