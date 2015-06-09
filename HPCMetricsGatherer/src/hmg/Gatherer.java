@@ -6,17 +6,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Andrew
+ * The Class Gatherer.
  *
+ * @author Andrew
  */
 
 public class Gatherer {
 
+	/** The Constant logger. */
 	final static Logger logger = Logger.getLogger(Gatherer.class.toString());
 
 	/**
-	 * @param args
+	 * The main method.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 
@@ -30,6 +35,12 @@ public class Gatherer {
 		}
 	}
 
+	/**
+	 * Start metric verzamelen.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws InterruptedException the interrupted exception
+	 */
 	private static void startMetricVerzamelen() throws IOException, InterruptedException {
 		
 		ArrayList<DriverGegevens> dg = new ArrayList<DriverGegevens>();

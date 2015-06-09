@@ -8,17 +8,45 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VerwerkMetrics.
+ *
+ * @author andrew
+ */
 public class VerwerkMetrics  implements Runnable  {
+	
+	/** The t. */
 	private Thread t;
+	
+	/** The queue. */
 	private ConcurrentLinkedQueue<Metric> queue;
+	
+	/** The Constant logger. */
 	final static Logger logger = Logger.getLogger(VerwerkMetrics.class.toString());
+	
+	/** The gg. */
 	private GraphiteGegevens gg;
+	
+	/** The d. */
 	private DriverGegevens d;
 
+	/**
+	 * Instantiates a new verwerk metrics.
+	 */
 	public VerwerkMetrics() {
 
 	}
 
+	/**
+	 * VerwerkMetrics draait als een thread. Deze class controleert de gedeelde queue
+	 * wanneer metrics verschijnen worden deze naar Graphite gestuurd.
+	 *
+	 * @param d the d
+	 * @param queue the queue
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void start(DriverGegevens d, ConcurrentLinkedQueue<Metric> queue) throws IOException, InterruptedException {
 
 		gg = new GraphiteGegevens();
@@ -37,6 +65,9 @@ public class VerwerkMetrics  implements Runnable  {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		while (true) {
@@ -49,6 +80,9 @@ public class VerwerkMetrics  implements Runnable  {
 		}
 	}
 
+	/**
+	 * Haal metric uit queue.
+	 */
 	private void haalMetricUitQueue() {
 		Metric m;
 		while ((m = queue.poll()) != null ) {
@@ -56,6 +90,12 @@ public class VerwerkMetrics  implements Runnable  {
 		}
 	}
 
+	/**
+	 * bouwMetric voorziet de ruwe metric van extra gegevens
+	 * deze gegevens zorgen er voor dat de metric goed land in graphite.
+	 *
+	 * @param metric the metric
+	 */
 	private void bouwMetric(Metric metric) {
 
 		StringBuilder sb = new StringBuilder();
@@ -74,7 +114,13 @@ public class VerwerkMetrics  implements Runnable  {
 		logger.log(Level.SEVERE,sb.toString());
 		verstuurMetric(sb.toString());
 	}
-
+	
+	
+	/**
+	 * verstuurMetric maakt een verbinding met Graphite en stuurt een ontvangen metric er naar toe.
+	 *
+	 * @param completeMetric the complete metric
+	 */
 	private void verstuurMetric(String completeMetric) {
 		try {
 			int port = gg.getGraphitePoort();

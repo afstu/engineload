@@ -20,8 +20,17 @@ import org.hibernate.service.ServiceRegistry;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MetricsPortal.
+ */
 public class MetricsPortal {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
@@ -38,9 +47,9 @@ public class MetricsPortal {
 		log.info("Setting up Demo Database...");
 		setupDemoDatabase();
 		
-		//
-		// Site Root
-		//
+		/**
+		* Site Root
+		*/
 		get("/", (request, response) -> {
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
@@ -51,9 +60,9 @@ public class MetricsPortal {
 		}, new FreeMarkerEngine());
 
 		
-		//
-		// Gebruikers
-		//
+		/**
+		* Gebruikers
+		*/
 		get("/gebruikers", (request, response) -> {
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
@@ -110,9 +119,9 @@ public class MetricsPortal {
                 return "";
         });	
 
-		//
-		// Graphite
-		//
+		/**
+		* Graphite
+		*/
 		get("/graphite", (request, response) -> {
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
@@ -161,9 +170,9 @@ public class MetricsPortal {
                 return "";
         });	
 		
-		//
-		// Clusters
-		//
+		/**
+		* Clusters
+		*/
 		get("/clusters", (request, response) -> {
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
@@ -217,9 +226,9 @@ public class MetricsPortal {
                 return "";
         });	
 
-		//
-		// Rollen
-		//
+		/**
+		* Rollen
+		*/
 		get("/rollen", (request, response) -> {
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
@@ -270,9 +279,9 @@ public class MetricsPortal {
                 return "";
         });
 		
-		//
-		// Generic Rapporten
-		//
+		/*
+		* Generic Rapporten
+		*/
 		get("/rapporten", (request, response) -> {
 
 			Calendar cal = Calendar.getInstance();
@@ -326,6 +335,9 @@ public class MetricsPortal {
 		}, new FreeMarkerEngine());
 	}
 	
+	/**
+	 * Setup demo database.
+	 */
 	static void setupDemoDatabase() {
 		
 		SessionFactory sessionFactory;

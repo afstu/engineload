@@ -1,30 +1,62 @@
 package portal;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Rapport.
+ */
 public class Rapport {
 
+	/** The graphite url. */
 	private String graphiteUrl;
+	
+	/** The cluster naam. */
 	private String clusterNaam;
+	
+	/** The cluster status. */
 	private String clusterStatus;
+	
+	/** The cluster director. */
 	private String clusterDirector;
+	
+	/** The cluster beschrijving. */
 	private String clusterBeschrijving;
+	
+	/** The begin tijd. */
 	private long beginTijd;
+	
+	/** The eind tijd. */
 	private long eindTijd;
 //	private ArrayList<String> grafiekUris;
 	
-	public Rapport() {
+	/**
+ * Instantiates a new rapport.
+ */
+public Rapport() {
 		
 	}
 
+	/**
+	 * Gets the graphite url.
+	 *
+	 * @return the graphite url
+	 */
 	public String getGraphiteUrl() {
 		return graphiteUrl;
 	}
 
+	/**
+	 * Sets the graphite url.
+	 *
+	 * @param graphiteUrl the new graphite url
+	 */
 	public void setGraphiteUrl(String graphiteUrl) {
 		this.graphiteUrl = graphiteUrl;
 	}
 
 	/**
+	 * Gets the cluster naam.
+	 *
 	 * @return the clusterNaam
 	 */
 	public String getClusterNaam() {
@@ -32,6 +64,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the cluster naam.
+	 *
 	 * @param clusterNaam the clusterNaam to set
 	 */
 	public void setClusterNaam(String clusterNaam) {
@@ -39,6 +73,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Gets the cluster status.
+	 *
 	 * @return the clusterStatus
 	 */
 	public String getClusterStatus() {
@@ -46,6 +82,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the cluster status.
+	 *
 	 * @param clusterStatus the clusterStatus to set
 	 */
 	public void setClusterStatus(String clusterStatus) {
@@ -53,6 +91,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Gets the cluster director.
+	 *
 	 * @return the clusterDirector
 	 */
 	public String getClusterDirector() {
@@ -60,6 +100,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the cluster director.
+	 *
 	 * @param clusterDirector the clusterDirector to set
 	 */
 	public void setClusterDirector(String clusterDirector) {
@@ -67,6 +109,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Gets the cluster beschrijving.
+	 *
 	 * @return the clusterBeschrijving
 	 */
 	public String getClusterBeschrijving() {
@@ -74,6 +118,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the cluster beschrijving.
+	 *
 	 * @param clusterBeschrijving the clusterBeschrijving to set
 	 */
 	public void setClusterBeschrijving(String clusterBeschrijving) {
@@ -81,6 +127,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Gets the begin tijd.
+	 *
 	 * @return the beginTijd
 	 */
 	public long getBeginTijd() {
@@ -88,6 +136,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the begin tijd.
+	 *
 	 * @param beginTijd the beginTijd to set
 	 */
 	public void setBeginTijd(long beginTijd) {
@@ -95,6 +145,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Gets the eind tijd.
+	 *
 	 * @return the eindTijd
 	 */
 	public long getEindTijd() {
@@ -102,6 +154,8 @@ public class Rapport {
 	}
 
 	/**
+	 * Sets the eind tijd.
+	 *
 	 * @param eindTijd the eindTijd to set
 	 */
 	public void setEindTijd(long eindTijd) {

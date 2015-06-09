@@ -2,9 +2,8 @@
 <classpath>
 	<classpathentry excluding="log4j/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Andrew/Dropbox/Eclipse/hyperic-sigar-1.6.4/sigar-bin/lib/sigar.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Andrew/Dropbox/Eclipse/hyperic-sigar-1.6.4/sigar-bin/lib/log4j.jar"/>
-	<classpathentry kind="lib" path="src/log4j"/>
+	<classpathentry exported="true" kind="lib" path="/home/andrew/hyperic-sigar-1.6.4/sigar-bin/lib/sigar.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/andrew/hyperic-sigar-1.6.4/sigar-bin/lib/log4j.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

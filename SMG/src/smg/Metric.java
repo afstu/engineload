@@ -1,8 +1,8 @@
 package smg;
 
+
 public class Metric {
 
-	private String TijdStip;
 	private int Waarde;
 	private String Type;
 	private String Bron;
@@ -13,11 +13,11 @@ public class Metric {
 	}
 
 	public String getTijdStip() {
-		return TijdStip;
+		return foo.TijdStip;
 	}
 
 	public void setTijdStip(String string) {
-		TijdStip = string;
+		foo.TijdStip = string;
 	}
 
 	public int getWaarde() {
@@ -52,4 +52,5 @@ public class Metric {
 		MetricPad = metricPad;
 	}
 	
+
 }

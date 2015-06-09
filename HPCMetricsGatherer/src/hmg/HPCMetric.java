@@ -18,21 +18,48 @@ import com.datasynapse.gridserver.admin.ServiceInfo;
 import com.datasynapse.gridserver.admin.ServiceInvocationInfo;
 import com.datasynapse.gridserver.driver.DriverManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HPCMetric.
+ */
 public class HPCMetric implements Runnable {
 
+	/** The t. */
 	private Thread t;
+	
+	/** The queue. */
 	private ConcurrentLinkedQueue<Metric> queue;
+	
+	/** The currenttime. */
 	private Calendar currenttime;
+	
+	/** The m. */
 	protected Metric m;
+	
+	/** The d. */
 	protected DriverGegevens d;
+	
+	/** The final metric list. */
 	protected List<Metric> finalMetricList;
 
+	/** The array list oflists of metrics lists. */
 	List<List<List<Metric>>> arrayListOflistsOfMetricsLists; 
 
+	/**
+	 * Instantiates a new HPC metric.
+	 */
 	public HPCMetric() {
 
 	}
 
+	/**
+	 * Start.
+	 *
+	 * @param d the d
+	 * @param queue the queue
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void start(DriverGegevens d,  ConcurrentLinkedQueue<Metric> queue) throws IOException, InterruptedException {
 
 		this.d = d;
@@ -44,6 +71,11 @@ public class HPCMetric implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the epoch time stamp.
+	 *
+	 * @return the epoch time stamp
+	 */
 	protected String getEpochTimeStamp () {
 		currenttime = Calendar.getInstance();		
 		long time = currenttime.getTime().getTime() / 1000;
@@ -51,6 +83,9 @@ public class HPCMetric implements Runnable {
 		return String.valueOf(time);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try {
@@ -61,6 +96,12 @@ public class HPCMetric implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the HPC metric.
+	 *
+	 * @return the HPC metric
+	 * @throws Exception the exception
+	 */
 	public void getHPCMetric() throws Exception {
 
 		Properties p = new Properties();
@@ -332,9 +373,12 @@ public class HPCMetric implements Runnable {
 	}
 
 	/**
-	 * @param MetricBron
-	 * @param MetricName
-	 * @param Waarde
+	 * Fill metric.
+	 *
+	 * @param MetricBron the metric bron
+	 * @param MetricName the metric name
+	 * @param Waarde the waarde
+	 * @return the metric
 	 */
 	private Metric fillMetric(String MetricBron, String MetricName, int Waarde) {
 		m = new Metric();
@@ -345,6 +389,12 @@ public class HPCMetric implements Runnable {
 		return m;
 	}
 
+	/**
+	 * Gets the max waarde.
+	 *
+	 * @param list the list
+	 * @return the max waarde
+	 */
 	private int getMaxWaarde(List<Metric> list) {
 
 		int maxWaarde = 0;
@@ -359,16 +409,16 @@ public class HPCMetric implements Runnable {
 		return 0;
 	}
 
-	private int getSumWaarde(List<Metric> list) {
-
-		int sumWaarde = 0;
-
-		for (Metric m : list) {
-
-			sumWaarde += m.getWaarde();
-		}
-
-		return sumWaarde;
-	}
+//	private int getSumWaarde(List<Metric> list) {
+//
+//		int sumWaarde = 0;
+//
+//		for (Metric m : list) {
+//
+//			sumWaarde += m.getWaarde();
+//		}
+//
+//		return sumWaarde;
+//	}
 
 }
