@@ -2,7 +2,6 @@ package portal;
 
 import static spark.Spark.*;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,23 +9,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-
+import org.hibernate.service.ServiceRegistry;
 
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class MetricsPortal {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+		Configuration configuration = new Configuration();
+		configuration.configure();
+		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
+		
 		Logger log = Logger.getLogger("Portal -- ");
 
 		log.info("Setting up Demo Database...");
@@ -322,7 +328,12 @@ public class MetricsPortal {
 	
 	static void setupDemoDatabase() {
 		
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+		Configuration configuration = new Configuration();
+		configuration.configure();
+		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
 		
 		Graphite g = new Graphite();

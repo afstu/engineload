@@ -2,7 +2,9 @@ package portalTest;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 import portal.Cluster;
 import portal.Director;
@@ -44,8 +46,12 @@ public class AppTest
     }
     
 	public void testDB() {
-		SessionFactory sessionFactory = new Configuration().configure()
-				.buildSessionFactory();
+		SessionFactory sessionFactory;
+		ServiceRegistry serviceRegistry;
+		Configuration configuration = new Configuration();
+		configuration.configure();
+		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
