@@ -34,6 +34,8 @@ public class MetricsPortal {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
+		staticFileLocation("/scripts");
+		
 		SessionFactory sessionFactory;
 		ServiceRegistry serviceRegistry;
 		Configuration configuration = new Configuration();
@@ -41,16 +43,19 @@ public class MetricsPortal {
 		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
-		
+
 		Logger log = Logger.getLogger("Portal -- ");
 
 		log.info("Setting up Demo Database...");
 		setupDemoDatabase();
 		
 		/**
-		* Site Root
-		*/
+		 * Site Root
+		 */
 		get("/", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 
@@ -59,19 +64,22 @@ public class MetricsPortal {
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
 
-		
+
 		/**
-		* Gebruikers
-		*/
+		 * Gebruikers
+		 */
 		get("/gebruikers", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 
 			List<Gebruiker> gebruikerList;
-			
+
 			Query q = session.createQuery("from Gebruiker");
 			gebruikerList = q.list();
-		
+
 			if (gebruikerList.size() == 0) {
 				viewObjects.put("hasNoGebruikers", "Please define Gebruikers!");
 				viewObjects.put("templateName", "gebruikerForm.ftl");
@@ -79,58 +87,65 @@ public class MetricsPortal {
 				viewObjects.put("templateName", "gebruikerList.ftl");
 				viewObjects.put("Gebruikers", gebruikerList);
 			}
-			
+
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
-		
+
 		get("/gebruikers/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
-			
+
 			viewObjects.put("templateName", "gebruikerForm.ftl");
-			
+
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
-		
+
 		post("/gebruikers/create", (request, response) -> {
-            
-			//	log.info("POST sent this: " + request.queryParams("rol-naam"));
-				
-                String gebruikerCorpKey = request.queryParams("gebruiker-corpkey");
-                String gebruikerVoornaam = request.queryParams("gebruiker-voornaam");
-                String gebruikerAchternaam = request.queryParams("gebruiker-achternaam");
-                String gebruikerWachtwoord = request.queryParams("gebruiker-wachtwoord");
-                String gebruikerBeschrijving = request.queryParams("gebruiker-beschrijving");
-            
-                Gebruiker g = new Gebruiker();
-                
-                g.setCorpKey(gebruikerCorpKey);
-                g.setVoorNaam(gebruikerVoornaam);
-                g.setAchterNaam(gebruikerAchternaam);
-                g.setWachtWoord(gebruikerWachtwoord);
-                g.setGebruikerBeschrijving(gebruikerBeschrijving);
-                
-                session.beginTransaction();
-                session.persist(g);
-                session.getTransaction().commit();
-                
-                response.status(201);
-                response.redirect("/gebruikers");
-                return "";
-        });	
+			
+			response.status(200);
+	        response.type("text/html");
+
+			String gebruikerCorpKey = request.queryParams("gebruiker-corpkey");
+			String gebruikerVoornaam = request.queryParams("gebruiker-voornaam");
+			String gebruikerAchternaam = request.queryParams("gebruiker-achternaam");
+			String gebruikerWachtwoord = request.queryParams("gebruiker-wachtwoord");
+			String gebruikerBeschrijving = request.queryParams("gebruiker-beschrijving");
+
+			Gebruiker g = new Gebruiker();
+
+			g.setCorpKey(gebruikerCorpKey);
+			g.setVoorNaam(gebruikerVoornaam);
+			g.setAchterNaam(gebruikerAchternaam);
+			g.setWachtWoord(gebruikerWachtwoord);
+			g.setGebruikerBeschrijving(gebruikerBeschrijving);
+
+			session.beginTransaction();
+			session.persist(g);
+			session.getTransaction().commit();
+
+			response.status(201);
+			response.redirect("/gebruikers");
+			return "";
+		});	
 
 		/**
-		* Graphite
-		*/
+		 * Graphite
+		 */
 		get("/graphite", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");			
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 
 			List<Graphite> graphiteList;
-			
+
 			Query q = session.createQuery("from Graphite");
 			graphiteList = q.list();
-			
+
 			if (graphiteList.size() == 0) {
 				viewObjects.put("hasNoGraphite", "Please define the Graphite!");
 				viewObjects.put("templateName", "graphiteForm.ftl");
@@ -143,44 +158,51 @@ public class MetricsPortal {
 		}, new FreeMarkerEngine());
 
 		get("/graphite/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
-			
+
 			viewObjects.put("templateName", "clusterForm.ftl");
-			
+
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
-		
+
 		post("/graphite/create", (request, response) -> {
-            
-			//	log.info("POST sent this: " + request.queryParams("rol-naam"));
-				
-                String graphiteUrl = request.queryParams("graphite-url");
-                
-                Graphite g = new Graphite();
-                
-                g.setGraphiteUrl(graphiteUrl);
-                
-                session.beginTransaction();
-                session.persist(g);
-                session.getTransaction().commit();
-                
-                response.status(201);
-                response.redirect("/graphite");
-                return "";
-        });	
-		
+			
+			response.status(200);
+	        response.type("text/html");
+
+			String graphiteUrl = request.queryParams("graphite-url");
+
+			Graphite g = new Graphite();
+
+			g.setGraphiteUrl(graphiteUrl);
+
+			session.beginTransaction();
+			session.persist(g);
+			session.getTransaction().commit();
+
+			response.status(201);
+			response.redirect("/graphite");
+			return "";
+		});	
+
 		/**
-		* Clusters
-		*/
+		 * Clusters
+		 */
 		get("/clusters", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 			List<Cluster> clusterList;
-			
+
 			Query q = session.createQuery("from Cluster");
 			clusterList = q.list();
-		
+
 			if (clusterList.size() == 0) {
 				viewObjects.put("hasNoClusters", "Please define a Cluster!");
 				viewObjects.put("templateName", "clusterForm.ftl");
@@ -193,50 +215,57 @@ public class MetricsPortal {
 		}, new FreeMarkerEngine());
 
 		get("/clusters/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
-			
+
 			viewObjects.put("templateName", "clusterForm.ftl");
-			
+
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
-		
+
 		post("/clusters/create", (request, response) -> {
-            
-			//	log.info("POST sent this: " + request.queryParams("rol-naam"));
-				
-                String clusterNaam = request.queryParams("cluster-naam");
-                String clusterStatus = request.queryParams("cluster-status");
-                String clusterDirector = request.queryParams("cluster-director");
-                String clusterBeschrijving = request.queryParams("cluster-beschrijving");
-            
-                Cluster c = new Cluster();
-                
-                c.setClusterNaam(clusterNaam);
-                c.setClusterStatus(clusterStatus);
-                c.setClusterDirector(clusterDirector);
-                c.setClusterBeschrijving(clusterBeschrijving);
-                
-                session.beginTransaction();
-                session.persist(c);
-                session.getTransaction().commit();
-                
-                response.status(201);
-                response.redirect("/clusters");
-                return "";
-        });	
+			
+			response.status(200);
+	        response.type("text/html");
+
+			String clusterNaam = request.queryParams("cluster-naam");
+			String clusterStatus = request.queryParams("cluster-status");
+			String clusterDirector = request.queryParams("cluster-director");
+			String clusterBeschrijving = request.queryParams("cluster-beschrijving");
+
+			Cluster c = new Cluster();
+
+			c.setClusterNaam(clusterNaam);
+			c.setClusterStatus(clusterStatus);
+			c.setClusterDirector(clusterDirector);
+			c.setClusterBeschrijving(clusterBeschrijving);
+
+			session.beginTransaction();
+			session.persist(c);
+			session.getTransaction().commit();
+
+			response.status(201);
+			response.redirect("/clusters");
+			return "";
+		});	
 
 		/**
-		* Rollen
-		*/
+		 * Rollen
+		 */
 		get("/rollen", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 			List<Rol> rolList;
-			
+
 			Query q = session.createQuery("from Rol");
 			rolList = q.list();
-			
+
 			if (rolList.size() == 0) {
 				viewObjects.put("hasNoRoles", "Please define a Role!");
 				viewObjects.put("templateName", "roleForm.ftl");
@@ -249,81 +278,90 @@ public class MetricsPortal {
 		}, new FreeMarkerEngine());
 
 		get("/rollen/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
-			
+
 			viewObjects.put("templateName", "roleForm.ftl");
-			
+
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
-		
-		
+
+
 		post("/rollen/create", (request, response) -> {
-            
+			
+			response.status(200);
+	        response.type("text/html");
+
 			//	log.info("POST sent this: " + request.queryParams("rol-naam"));
-				
-                String rolNaam = request.queryParams("rol-naam");
-                String rolBeschrijving = request.queryParams("rol-beschrijving");
-            
-                Rol r = new Rol();
-                
-                r.setRolNaam(rolNaam);
-                r.setRolBeschrijving(rolBeschrijving);
-                
-                session.beginTransaction();
-                session.persist(r);
-                session.getTransaction().commit();
-                
-                response.status(201);
-                response.redirect("/rollen");
-                return "";
-        });
-		
+
+			String rolNaam = request.queryParams("rol-naam");
+			String rolBeschrijving = request.queryParams("rol-beschrijving");
+
+			Rol r = new Rol();
+
+			r.setRolNaam(rolNaam);
+			r.setRolBeschrijving(rolBeschrijving);
+
+			session.beginTransaction();
+			session.persist(r);
+			session.getTransaction().commit();
+
+			response.status(201);
+			response.redirect("/rollen");
+			return "";
+		});
+
 		/*
-		* Generic Rapporten
-		*/
+		 * Generic Rapporten
+		 */
 		get("/rapporten", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
 
 			Calendar cal = Calendar.getInstance();
 			Date date = cal.getTime();
-			
+
 			Map<String, Object> viewObjects = new HashMap<String, Object>();
 
 			// int myId = request.queryParams("gebruiker-id");
-			
+
 			// SQL for Graphite URL
 			List<Graphite> graphiteUrl = session.createQuery("from Graphite").list();
-						
+
 			// SQL for Cluster data
 			// SQL to look up which cluster a user can see a user can see
-			
-//			Query clusterData = session.createQuery("select g.RolId, r.RolId, c.RolId, c.ClusterName, c.ClusterStatus, c.director from Cluster as c" + 
-//													"join Rol as r" +
-//													"join Gebruiker as g" +
-//													"where g.id = 'myId' " 
-//													);
-					
+
+			//			Query clusterData = session.createQuery("select g.RolId, r.RolId, c.RolId, c.ClusterName, c.ClusterStatus, c.director from Cluster as c" + 
+			//													"join Rol as r" +
+			//													"join Gebruiker as g" +
+			//													"where g.id = 'myId' " 
+			//													);
+
 			// Demo	1 hour report	
 			List<Cluster> clusterData = session.createQuery("from Cluster c where c.ClusterNaam='kvm' and c.ClusterStatus='D'").list();
-			
+
 			ArrayList<Rapport> rapportList = new ArrayList<Rapport>();
-			
+
 			for (int i = 0; i < clusterData.size(); i++) {
-				
+
 				Rapport r = new Rapport();
 				r.setGraphiteUrl(graphiteUrl.get(0).getGraphiteUrl());
-					
+
 				r.setClusterNaam(clusterData.get(i).getClusterNaam());
 				r.setClusterStatus(clusterData.get(i).getClusterStatus());
 				r.setClusterDirector(clusterData.get(i).getClusterDirector());
 				r.setClusterBeschrijving(clusterData.get(i).getClusterBeschrijving());
-						
+
 				r.setEindTijd(date.getTime());
 				r.setBeginTijd(date.getTime() - 3600 * 1000L);
-				
+
 				rapportList.add(r);
 			}
-			
+
 			if (rapportList.size() == 0) {
 				viewObjects.put("hasNoRapporten", "Er zijn geen rapporten!");
 			} else {
@@ -333,13 +371,95 @@ public class MetricsPortal {
 
 			return new ModelAndView(viewObjects, "admin.ftl");
 		}, new FreeMarkerEngine());
+
+		/**
+		 * Gebruiker Rapporten
+		 */
+		get("/gebruikerrapporten", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
+			
+			Calendar cal = Calendar.getInstance();
+			Date date = cal.getTime();
+
+			Map<String, Object> viewObjects = new HashMap<String, Object>();
+
+			List<Graphite> graphiteUrl = session.createQuery("from Graphite").list();
+			List<Cluster> clusterData = session.createQuery("from Cluster c where c.ClusterNaam='kvm' and c.ClusterStatus='D'").list();
+
+			ArrayList<Rapport> rapportList = new ArrayList<Rapport>();
+
+			for (int i = 0; i < clusterData.size(); i++) {
+
+				Rapport r = new Rapport();
+				r.setGraphiteUrl(graphiteUrl.get(0).getGraphiteUrl());
+
+				r.setClusterNaam(clusterData.get(i).getClusterNaam());
+				r.setClusterStatus(clusterData.get(i).getClusterStatus());
+				r.setClusterDirector(clusterData.get(i).getClusterDirector());
+				r.setClusterBeschrijving(clusterData.get(i).getClusterBeschrijving());
+
+				r.setEindTijd(date.getTime());
+				r.setBeginTijd(date.getTime() - 3600 * 1000L);
+
+				rapportList.add(r);
+			}
+
+			if (rapportList.size() == 0) {
+				viewObjects.put("hasNoRapporten", "Er zijn geen rapporten!");
+			} else {
+				viewObjects.put("templateName", "rapportList.ftl");
+				viewObjects.put("Rapporten", rapportList);
+			}
+
+
+			return new ModelAndView(viewObjects, "gebruikerRapport.ftl");
+		}, new FreeMarkerEngine());
+
+		get("/gebruikerrapporten/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
+
+			Map<String, Object> viewObjects = new HashMap<String, Object>();
+
+			viewObjects.put("templateName", "gebruikerRapportForm.ftl");
+
+			return new ModelAndView(viewObjects, "gebruikerRapport.ftl");
+		}, new FreeMarkerEngine());
+
+
+		post("/gebruikerrapporten/create", (request, response) -> {
+			
+			response.status(200);
+	        response.type("text/html");
+
+			//	log.info("POST sent this: " + request.queryParams("rol-naam"));
+
+			String rolNaam = request.queryParams("rol-naam");
+			String rolBeschrijving = request.queryParams("rol-beschrijving");
+
+			Rol r = new Rol();
+
+			r.setRolNaam(rolNaam);
+			r.setRolBeschrijving(rolBeschrijving);
+
+			session.beginTransaction();
+			session.persist(r);
+			session.getTransaction().commit();
+
+			response.status(201);
+			response.redirect("/rollen");
+			return "";
+		});
 	}
-	
+
 	/**
 	 * Setup demo database.
 	 */
 	static void setupDemoDatabase() {
-		
+
 		SessionFactory sessionFactory;
 		ServiceRegistry serviceRegistry;
 		Configuration configuration = new Configuration();
@@ -347,20 +467,20 @@ public class MetricsPortal {
 		serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
-		
+
 		Graphite g = new Graphite();
 		Cluster c = new Cluster();
-		
+
 		g.setGraphiteUrl("http://graphite");
 		c.setClusterNaam("kvm");
 		c.setClusterStatus("D");
 		c.setClusterDirector("director1");
 		c.setClusterBeschrijving("Demo Cluster!");
-		
-        session.beginTransaction();
-        session.persist(g);
-        session.persist(c);
-        session.getTransaction().commit();
+
+		session.beginTransaction();
+		session.persist(g);
+		session.persist(c);
+		session.getTransaction().commit();
 		session.close();
 		sessionFactory.close();
 	}
