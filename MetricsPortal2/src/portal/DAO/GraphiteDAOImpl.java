@@ -1,24 +1,42 @@
 package portal.DAO;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import portal.model.Graphite;
 
-public class GraphiteDAOImpl implements GraphiteDAO {
+@Repository
+@Transactional
+public class GraphiteDAOImpl implements IportalDAO<Graphite, Serializable> {
 
+	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public GraphiteDAOImpl(SessionFactory sessionFactory) {
+	public GraphiteDAOImpl() {
+		
+	}
+
+	/**
+	 * @return the sessionFactory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	/**
+	 * @param sessionFactory the sessionFactory to set
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
-	@Transactional
 	public List<Graphite> list() {
 	    @SuppressWarnings("unchecked")
         List<Graphite> listGraphite = (List<Graphite>) sessionFactory.getCurrentSession()
@@ -28,4 +46,27 @@ public class GraphiteDAOImpl implements GraphiteDAO {
         return listGraphite;
 	}
 
+	@Override
+	public Graphite create(Graphite g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Graphite read(Serializable id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Graphite update(Graphite g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Serializable id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

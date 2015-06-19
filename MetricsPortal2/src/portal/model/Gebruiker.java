@@ -78,7 +78,7 @@ public class Gebruiker {
 	 *
 	 * @return the voor naam
 	 */
-	public String getVoorNaam() {
+	public String getVoornaam() {
 		return Voornaam;
 	}
 
@@ -87,7 +87,7 @@ public class Gebruiker {
 	 *
 	 * @param voornaam the new voor naam
 	 */
-	public void setVoorNaam(String voornaam) {
+	public void setVoornaam(String voornaam) {
 		Voornaam = voornaam;
 	}
 
@@ -96,7 +96,7 @@ public class Gebruiker {
 	 *
 	 * @return the achter naam
 	 */
-	public String getAchterNaam() {
+	public String getAchternaam() {
 		return Achternaam;
 	}
 
@@ -105,7 +105,7 @@ public class Gebruiker {
 	 *
 	 * @param achternaam the new achter naam
 	 */
-	public void setAchterNaam(String achternaam) {
+	public void setAchternaam(String achternaam) {
 		Achternaam = achternaam;
 	}
 
