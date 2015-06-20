@@ -1,5 +1,8 @@
 package portal.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,18 +13,28 @@ import javax.persistence.Id;
  * The Class Rol.
  */
 @Entity
-public class Rol {
+public class Rol implements Serializable {
 	
-	/** The Id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long Id;
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	//	/** The Id. */
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "ROL_ID")
+//	private long Id;
 	
 	/** The Rol naam. */
+	@Id
+	@Column(name = "ROL_NAAM", unique = true, nullable = false, length = 20)
 	private String RolNaam;
 	
 	/** The Rol beschrijving. */
+	@Column(name = "ROL_BESCHRIJVING" , unique = false, nullable = true, length = 200)
 	private String RolBeschrijving;
+	
 	
 	/**
 	 * Instantiates a new rol.
@@ -29,23 +42,6 @@ public class Rol {
 	public Rol() {		
 	}
 	
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return Id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(long id) {
-		Id = id;
-	}
 
 	/**
 	 * Gets the rol naam.
@@ -82,23 +78,4 @@ public class Rol {
 	public void setRolBeschrijving(String rolBeschrijving) {
 		RolBeschrijving = rolBeschrijving;
 	}
-
-	/**
-	 * Gets the edits the link.
-	 *
-	 * @return the edits the link
-	 */
-	public String getEditLink() {
-		return "<a href='/rol/edit/" + this.RolNaam + "'>Edit</a>";
-	}
-
-	/**
-	 * Gets the delete link.
-	 *
-	 * @return the delete link
-	 */
-	public String getDeleteLink() {
-		return "<a href='/rol/delete/" + this.RolNaam + "'>Delete</a>";
-	}
-
 }

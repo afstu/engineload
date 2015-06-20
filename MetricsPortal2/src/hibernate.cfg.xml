@@ -17,9 +17,12 @@
  
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
  
         <!-- Drop and re-create all database on startup -->
         <property name="hibernate.hbm2ddl.auto">create</property>
+		<property name="hibernate.hbm2ddl.import_files">import.sql</property>
  
         <!-- Annotated entity classes -->
         <mapping class="portal.model.Cluster"/>

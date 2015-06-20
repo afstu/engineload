@@ -1,37 +1,75 @@
 package portal.model;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Id;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Cluster.
  */
 @Entity
-public class Cluster {
+@Table(name = "Cluster")
+public class Cluster implements Serializable {
 	
-	/** The Id. */
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long Id;
+	@Column(name = "CLUSTER_ID", nullable=false)
+	private long ClusterId;
 	
+
+
 	/** The Cluster naam. */
+	@Column(name = "CLUSTER_NAAM",  unique = false, nullable = false, length = 20)
 	private String ClusterNaam;
 	
+	
 	/** The Cluster status. */
+	@Column(name = "CLUSTER_STATUS", unique = true, nullable = false, length = 1)
 	private String ClusterStatus;
 	
 	/** The Rol. */
-	private String Rol;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "cluster_rol", joinColumns = {
+			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},
+//			@JoinColumn(name = "CLUSTER_STATUS", insertable = false, nullable = false, updatable = false),
+//			@JoinColumn(name = "CLUSTER_NAAM", insertable = false, nullable = false, updatable = false)},			
+			inverseJoinColumns = {
+			@JoinColumn(name = "ROL_NAAM", 
+					insertable = false, nullable = false, updatable = false) })
+	private Set<Rol> ClusterRollen;
 	
 	/** The director. */
-	private String director;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "cluster_director", joinColumns = { 
+			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},
+//			@JoinColumn(name = "CLUSTER_STATUS", insertable = false, nullable = false, updatable = false),
+//			@JoinColumn(name = "CLUSTER_NAAM", insertable = false, nullable = false, updatable = false)}, 
+			inverseJoinColumns = { @JoinColumn(name = "DIRECTOR_NAAM", 
+					insertable = false, nullable = false, updatable = false) })
+	private Director ClusterDirector;
 	
 	/** The Cluster beschrijving. */
+	@Column(name = "CLUSTER_BESCHRIJVING")
 	private String ClusterBeschrijving;
-
+	
 	/**
 	 * Instantiates a new cluster.
 	 */
@@ -39,75 +77,31 @@ public class Cluster {
 	}
 
 	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return Id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		Id = id;
-	}
-
-	/**
-	 * Gets the cluster naam.
-	 *
-	 * @return the cluster naam
+	 * @return the clusterNaam
 	 */
 	public String getClusterNaam() {
 		return ClusterNaam;
 	}
 
 	/**
-	 * Sets the cluster naam.
-	 *
-	 * @param clusterNaam the new cluster naam
+	 * @param clusterNaam the clusterNaam to set
 	 */
 	public void setClusterNaam(String clusterNaam) {
 		ClusterNaam = clusterNaam;
 	}
 
 	/**
-	 * Gets the cluster status.
-	 *
-	 * @return the cluster status
+	 * @return the clusterStatus
 	 */
 	public String getClusterStatus() {
 		return ClusterStatus;
 	}
 
 	/**
-	 * Sets the cluster status.
-	 *
-	 * @param string the new cluster status
+	 * @param clusterStatus the clusterStatus to set
 	 */
-	public void setClusterStatus(String string) {
-		ClusterStatus = string;
-	}
-
-	/**
-	 * Gets the rol.
-	 *
-	 * @return the rol
-	 */
-	public String getRol() {
-		return Rol;
-	}
-
-	/**
-	 * Adds the rol.
-	 *
-	 * @param rol the rol
-	 */
-	public void addRol(String rol) {
-		this.Rol = rol;
+	public void setClusterStatus(String clusterStatus) {
+		ClusterStatus = clusterStatus;
 	}
 
 	/**
@@ -115,8 +109,8 @@ public class Cluster {
 	 *
 	 * @return the cluster director
 	 */
-	public String getClusterDirector() {
-		return director;
+	public Director getClusterDirector() {
+		return ClusterDirector;
 	}
 
 	/**
@@ -124,8 +118,26 @@ public class Cluster {
 	 *
 	 * @param director the new cluster director
 	 */
-	public void setClusterDirector(String director) {
-		this.director = director;
+	public void setClusterDirectorNaam(String directorNaam) {
+		this.ClusterDirector.setDirectorNaam(directorNaam);
+	}
+	
+	/**
+	 * Gets the cluster director naam.
+	 *
+	 * @return the cluster director naam
+	 */
+	public String getClusterDirectorNaam() {
+		return ClusterDirector.getDirectorNaam();
+	}
+
+	/**
+	 * Sets the cluster director.
+	 *
+	 * @param director the new cluster director
+	 */
+	public void setClusterDirector(Director director) {
+		this.ClusterDirector = director;
 	}
 
 	/**
@@ -146,22 +158,25 @@ public class Cluster {
 		ClusterBeschrijving = clusterBeschrijving;
 	}
 
+	public Set<Rol> getClusterRollen() {
+		return ClusterRollen;
+	}
+
+	public void setClusterRollen(Set<Rol> clusterRollen) {
+		ClusterRollen = clusterRollen;
+	}	
+	
 	/**
-	 * Gets the edits the link.
-	 *
-	 * @return the edits the link
+	 * @return the clusterId
 	 */
-	public String getEditLink() {
-		return "<a href='/cluster/edit/" + this.ClusterNaam + "'>Edit</a>";
+	public long getClusterId() {
+		return ClusterId;
 	}
 
 	/**
-	 * Gets the delete link.
-	 *
-	 * @return the delete link
+	 * @param clusterId the clusterId to set
 	 */
-	public String getDeleteLink() {
-		return "<a href='/cluster/delete/" + this.ClusterNaam + "'>Delete</a>";
+	public void setClusterId(long clusterId) {
+		ClusterId = clusterId;
 	}
-
 }

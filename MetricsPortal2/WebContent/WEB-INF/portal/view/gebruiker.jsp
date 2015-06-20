@@ -7,67 +7,73 @@
 	</div>
 	<div class="panel-body">
 
+		<!-- Table -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>CorpKey</th>
+					<th>Voornaam</th>
+					<th>Achternaam</th>
+					<th>Beschrijving</th>
+					<th>Rollen</th>
+					<th colspan=2>Gebruiker Tools</th>
 
-		<c:forEach var="gebruiker" items="${gebruikerList}">
-			<!-- Table -->
-			<table class="table">
-				<thead>
+				</tr>
+			</thead>
+			<tbody>
+
+				<c:forEach var="gebruiker" items="${gebruikerList}">
+
+
 					<tr>
-						<!-- 						<th>ID</th> -->
-						<th>Voornaam</th>
-						<th>Achternaam</th>
-						<th>CorpKey</th>
-						<th>Beschrijving</th>
-						<th>Tools</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<%-- 						<td>${gebruiker.getId()}</td> --%>
+						<td>${gebruiker.getCorpKey()}</td>
 						<td>${gebruiker.getVoornaam()}</td>
 						<td>${gebruiker.getAchternaam()}</td>
-						<td>${gebruiker.getCorpKey()}</td>
-						<td>${gebruiker.getGebruikerBeschrijving()}</td>
-						<td><c:choose>
-								<c:when test="${gebruiker.getId()=='0'}">
-									<form:form method='GET'
-										action='/MetricsPortal2/gebruikers/update'
-										modelAttribute="gebruiker">
-										<div class="span2">
-											<div class="btn-group-xs" role="group" aria-label="...">
-												<button type="submit" name="update" class="btn btn-default"
-													value=${gebruiker.getId()} >Edit</button>
-											</div>
-										</div>
-										</form:form>
-								</c:when>
-								<c:otherwise>
-									<form:form method='GET'
-										action='/MetricsPortal2/gebruikers/update'
-										modelAttribute="gebruiker">
-										<div class="span2">
-											<div class="btn-group-xs" role="group" aria-label="...">
-												<button type="submit" name="update" class="btn btn-default"
-													value=${gebruiker.getId()} >Edit</button>
-											</div>
-										</div>
-									</form:form>
-									<form:form method='POST'
-										action='/MetricsPortal2/gebruikers/delete/'>
-										<div class="span2">
-											<div class="btn-group-xs" role="group" aria-label="...">
-												<button type="submit" name="delete" class="btn btn-danger"
-													value=${gebruiker.getId()}>Delete</button>
-											</div>
-										</div>
-									</form:form>
-								</c:otherwise>
-							</c:choose></td>
-					</tr>
-				</tbody>
-			</table>
 
-		</c:forEach>
+						<td>${gebruiker.getGebruikerBeschrijving()}</td>
+						<td>
+							<ul class=list-group>
+								<c:forEach var="Rol" items="${gebruiker.getGebruikerRollen()}">
+									<li class="list-group-item">${Rol.getRolNaam()}</li>
+								</c:forEach>
+							</ul>
+						</td>
+						<c:choose>
+
+							<c:when test="${gebruiker.getCorpKey()=='admin'}">
+								<td><form:form method='GET'
+										action='/MetricsPortal2/gebruikers/update'
+										modelAttribute="gebruiker">
+										<div class="btn-group-xs" role="group" aria-label="...">
+											<button type="submit" name="update" class="btn btn-default"
+												value="${gebruiker.getCorpKey()}" >Edit</button>
+										</div>
+									</form:form></td>
+							</c:when>
+							<c:otherwise>
+								<td><form:form method='GET'
+										action='/MetricsPortal2/gebruikers/update'
+										modelAttribute="gebruiker">
+										<div class="btn-group-xs" role="group" aria-label="...">
+											<button type="submit" name="update" class="btn btn-default"
+												value="${gebruiker.getCorpKey()}" >Edit</button>
+										</div>
+									</form:form></td>
+								<td><form:form method='POST'
+										action='/MetricsPortal2/gebruikers/delete/'>
+										<div class="btn-group-xs" role="group" aria-label="...">
+											<button type="submit" name="delete" class="btn btn-danger"
+												value="${gebruiker.getCorpKey()}">Delete</button>
+										</div>
+									</form:form></td>
+							</c:otherwise>
+
+						</c:choose>
+
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 	<div class="panel-footer"></div>
 </div>

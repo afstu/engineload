@@ -1,35 +1,47 @@
 package portal.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Director.
  */
 @Entity
+@Table(name = "Director", uniqueConstraints = {
+		@UniqueConstraint(columnNames = "DIRECTOR_NAAM")})
 public class Director {
 	
-	/** The Id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long Id;
+//	/** The Id. */
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "DIRECTOR_ID")
+//	private long Id;
 	
 	/** The Director naam. */
+	@Id
+	@Column(name = "DIRECTOR_NAAM", unique = true, nullable = false, length = 30)
 	private String DirectorNaam;
 	
 	/** The Driver naam. */
+	@Column(name = "DRIVER_NAAM", unique = false, nullable = false, length = 20)
 	private String DriverNaam;
 	
 	/** The Driver wachtwoord. */
+	@Column(name = "DRIVER_WACHTWOORD", unique = false, nullable = false, length = 20)
 	private String DriverWachtwoord;
 	
 	/** The Director poort. */
+	@Column(name = "DIRECTOR_POORT", unique = false, nullable = false, length = 5)
 	private int DirectorPoort;
 	
 	/** The Director beschrijving. */
+	@Column(name = "DIRECTOR_BESCHRIJVING", unique = false, nullable = true, length = 200)
 	private String DirectorBeschrijving;
 
 	/**
@@ -37,24 +49,6 @@ public class Director {
 	 */
 	public Director() {
 		
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return Id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		Id = id;
 	}
 
 	/**
@@ -145,24 +139,6 @@ public class Director {
 	 */
 	public void setDirectorBeschrijving(String directorBeschrijving) {
 		DirectorBeschrijving = directorBeschrijving;
-	}
-
-	/**
-	 * Gets the edits the link.
-	 *
-	 * @return the edits the link
-	 */
-	public String getEditLink() {
-		return "<a href='/director/edit/" + this.DirectorNaam + "'>Edit</a>";
-	}
-
-	/**
-	 * Gets the delete link.
-	 *
-	 * @return the delete link
-	 */
-	public String getDeleteLink() {
-		return "<a href='/director/delete/" + this.DirectorNaam + "'>Delete</a>";
 	}
 
 }

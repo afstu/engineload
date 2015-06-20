@@ -1,7 +1,12 @@
 BEGIN
-INSERT INTO Gebruiker ( id , achternaam , corpkey , gebruikerbeschrijving , voornaam , wachtwoord) 	VALUES (0, 'Boss', 'admin', 'Demo Portal Admin', 'The', 'admin123');
-INSERT INTO Director ( id , directorbeschrijving , directornaam , directorpoort , drivernaam , driverwachtwoord) VALUES (0, 'Demo Director', 'director1', '8000', 'DemoDriver', 'demowachtwoord');
-INSERT INTO Rol	( id , rolbeschrijving , rolnaam) VALUES (0, 'Admin Rol', 'AdminRol');
-INSERT INTO Cluster (id , clusterbeschrijving , clusternaam , clusterstatus , rol , director) VALUES (0, 'Demo Cluster', 'cluster1', 'D', 'AdminRol', 'director1');
-INSERT INTO Graphite (id, graphiteurl) VALUES (0, 'http://graphite');
+	INSERT INTO Rol	(ROL_NAAM, ROL_BESCHRIJVING ) VALUES ('AdminRol', 'Dit is de AdminRol');
+	INSERT INTO Rol	(ROL_NAAM, ROL_BESCHRIJVING ) VALUES ('TestRol', 'Dit is een TestRol');
+	INSERT INTO Gebruiker (GEBRUIKER_CORPKEY, GEBRUIKER_VOORNAAM, GEBRUIKER_ACHTERNAAM, GEBRUIKER_BESCHRIJVING, GEBRUIKER_WACHTWOORD ) 	VALUES ('admin', 'The', 'Boss', 'Demo Portal Admin', 'admin123');
+	INSERT INTO gebruiker_rol VALUES ('admin', 'AdminRol')
+	INSERT INTO Cluster (CLUSTER_ID, CLUSTER_NAAM, CLUSTER_STATUS, CLUSTER_BESCHRIJVING) VALUES (0, 'cluster1', 'D',  'Demo Cluster');
+	INSERT INTO cluster_rol (CLUSTER_ID,  ROL_NAAM) VALUES (0,   'AdminRol')
+	INSERT INTO cluster_rol (CLUSTER_ID,  ROL_NAAM) VALUES (0,   'TestRol')
+	INSERT INTO Director (DIRECTOR_NAAM, DIRECTOR_POORT, DIRECTOR_BESCHRIJVING, DRIVER_NAAM, DRIVER_WACHTWOORD ) VALUES ('director1', 8000, 'Demo Director', 'DemoDriver', 'demowachtwoord');
+	INSERT INTO cluster_director (DIRECTOR_NAAM, CLUSTER_ID) VALUES ('director1', 0 )
+	INSERT INTO Graphite (GRAPHITE_URL) VALUES ('http://graphite');
 END

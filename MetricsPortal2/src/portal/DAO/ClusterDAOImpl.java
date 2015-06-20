@@ -3,8 +3,6 @@ package portal.DAO;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Id;
-
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import portal.model.Cluster;
-import portal.model.Gebruiker;
+
 
 @Repository
 @Transactional
@@ -51,25 +49,28 @@ public class ClusterDAOImpl implements IportalDAO<Cluster, Serializable> {
 
 	@Override
 	public Cluster create(Cluster c) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().persist(c);
+		sessionFactory.getCurrentSession().flush();
+		return c;
 	}
 
 	@Override
 	public Cluster read(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Cluster c = (Cluster) sessionFactory.getCurrentSession().get(Cluster.class, id);
+		return c;
+		}
 
 	@Override
 	public Cluster update(Cluster c) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().update(c);
+		sessionFactory.getCurrentSession().flush();
+		return c;
 	}
 
 	@Override
 	public void delete(Serializable id) {
-		// TODO Auto-generated method stub
-		
+		Cluster c = (Cluster) sessionFactory.getCurrentSession().get(Cluster.class, id);
+		sessionFactory.getCurrentSession().delete(c);
+		sessionFactory.getCurrentSession().flush();
 	}
 }

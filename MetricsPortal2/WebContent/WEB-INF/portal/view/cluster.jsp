@@ -1,23 +1,65 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp" %>
+<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
 
 
-              
-<c:forEach var="gebruiker" items="${clusterList}">
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Portal Clusters </h3>
-  </div>
-  <div class="panel-body">
-      <!-- Table -->
-  <table class="table">
-  <thead><tr><th>ID</th><th>Clusternaam</th><th>Clusterstatus</th><th>Clusterdirector</th> </tr></thead>
-    <tbody><tr><td>${gebruiker.getId()}</td><td>${gebruiker.getVoorNaam()}</td><td>${gebruiker.getAchterNaam()}</td><td>${gebruiker.getCorpKey()}</td> </tr></tbody>
-  </table>
-  </div>
-  <div class="panel-footer"></div>
+	<div class="panel-heading">
+		<h4 class="panel-title">Portal Clusters</h4>
+	</div>
+	<div class="panel-body">
+
+		<!-- Table -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Cluster Naam</th>
+					<th>Cluster Status</th>
+					<th>Cluster Director</th>
+					<th>Cluster Beschrijving</th>
+					<th>Cluster Rollen</th>
+					<th colspan=2>Cluster Tools</th>
+
+				</tr>
+			</thead>
+			<tbody>
+
+				<c:forEach var="Cluster" items="${clusterList}">
+
+					<tr>
+						<td>${Cluster.getClusterNaam()}</td>
+						<td>${Cluster.getClusterStatus()}</td>
+						<td>${Cluster.getClusterDirectorNaam()}</td>
+						<td>${Cluster.getClusterBeschrijving()}</td>
+						<td>
+							<ul class=list-group>
+								<c:forEach var="Rol" items="${Cluster.getClusterRollen()}">
+									<li class="list-group-item">${Rol.getRolNaam()}</li>
+								</c:forEach>
+							</ul>
+						</td>
+
+						<td><form:form method='GET'
+								action='/MetricsPortal2/clusters/update'>
+								<div class="btn-group-xs" role="group" aria-label="...">
+									<button type="submit" name="update" class="btn btn-default"
+										value="${Cluster.getClusterId()}">Edit</button>
+								</div>
+							</form:form></td>
+						<td><form:form method='POST'
+								action='/MetricsPortal2/clusters/delete/'>
+								<div class="btn-group-xs" role="group" aria-label="...">
+									<button type="submit" name="delete" class="btn btn-danger"
+										value="${Cluster.getClusterId()}">Delete</button>
+								</div>
+							</form:form></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<div class="panel-footer"></div>
 </div>
-</c:forEach>
 
 
-        
-<%@ include file="/WEB-INF/portal/resources/footer.jsp" %>
+
+
+<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>

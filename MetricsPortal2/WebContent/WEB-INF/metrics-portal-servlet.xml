@@ -47,7 +47,8 @@
 		<beans:property name="dataSource" ref="dataSource" />
 		<beans:property name="configLocation" value="classpath:hibernate.cfg.xml" />
 	</beans:bean>
-
+	
+	
 	<!-- Automatic Transaction Manager -->
 	<beans:bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">

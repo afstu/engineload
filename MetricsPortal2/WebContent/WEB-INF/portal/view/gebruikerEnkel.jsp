@@ -9,53 +9,56 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>ID</th>
+						<th>CorpKey</th>
 						<th>Voornaam</th>
 						<th>Achternaam</th>
-						<th>CorpKey</th>
+						
 						<th>Beschrijving</th>
-						<th>Tools</th>
+						<th colspan=2>Gebruiker Tools</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>${gebruiker.getId()}</td>
+						<td>${gebruiker.getCorpKey()}</td>
 						<td>${gebruiker.getVoornaam()}</td>
 						<td>${gebruiker.getAchternaam()}</td>
-						<td>${gebruiker.getCorpKey()}</td>
+						<td>${gebruiker.getAchternaam()}</td>
 						<td>${gebruiker.getGebruikerBeschrijving()}</td>
 						
-						<td>
-						<div class="span2">
-					
 								<c:choose>
-									<c:when test="${gebruiker.getId()=='0'}">
+									<c:when test="${gebruiker.getCorpKey()=='admin'}">
+									<td>
 								<form:form method='GET'
 											action='/MetricsPortal2/gebruikers/update/'
 											modelAttribute="gebruiker">
 												<div class="btn-group-xs" role="group" aria-label="...">
-											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getId()} >Edit</button>
+											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getCorpKey()} >Edit</button>
 											</div>
 										</form:form>
+										</td>
 									</c:when>
 									<c:otherwise>
+								<td>
 										<form:form method='GET'
 											action='/MetricsPortal2/gebruikers/update/'
 											modelAttribute="gebruiker">
 												<div class="btn-group-xs" role="group" aria-label="...">
-											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getId()} >Edit</button>
+											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getCorpKey()} >Edit</button>
 											</div>
 										</form:form>
+										</td>
+										<td>
 										<form:form method='POST'
 											action='/MetricsPortal2/gebruikers/delete/' >
 												<div class="btn-group-xs" role="group" aria-label="...">
-											<button type="submit" name="delete" class="btn btn-danger" value=${gebruiker.getId()} >Delete</button>
+											<button type="submit" name="delete" class="btn btn-danger" value=${gebruiker.getCorpKey()} >Delete</button>
 											</div>
 										</form:form>
+										</td>
+										
 									</c:otherwise>
 								</c:choose>
 								</div>
-							</div></td>
 					</tr>
 				</tbody>
 			</table>

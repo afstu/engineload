@@ -36,7 +36,6 @@ public class GebruikerController {
 
 	@RequestMapping(value="/gebruikers/create", method=RequestMethod.GET)  
 	public ModelAndView create() {  
-		// portalDao.create(g);
 		Gebruiker gebruiker = new Gebruiker();
 		return new ModelAndView("gebruikerNew", "gebruiker", gebruiker);  
 	}
@@ -53,20 +52,15 @@ public class GebruikerController {
 	}  
 
 	@RequestMapping(value="/gebruikers/read")  
-	public ModelAndView read(@RequestParam Serializable id) {  
-		Gebruiker readGebruiker = portalDao.read(id);  
+	public ModelAndView read(@RequestParam String corpkey) {  
+		Gebruiker readGebruiker = portalDao.read(corpkey);  
 		return new ModelAndView("gebruikerEnkel", "gebruiker", readGebruiker);  
 	} 
 	
 	@RequestMapping(value="/gebruikers/update", method=RequestMethod.GET)  
-	public ModelAndView update(@ModelAttribute("update") Serializable id) {  
-		long longId = Long.parseLong((String) id);
-//		
-//		if (longId == 0) {
-//			return new ModelAndView ("redirect:/gebruikers");  
-//		}
+	public ModelAndView update(@ModelAttribute("update") String corpkey) {  
 		
-		Gebruiker gebruiker = portalDao.read(longId);
+		Gebruiker gebruiker = portalDao.read(corpkey);
 		return new ModelAndView("gebruikerUpdate", "gebruiker", gebruiker);  
 	} 
 
@@ -77,14 +71,13 @@ public class GebruikerController {
 	} 
 
 	@RequestMapping(value="/gebruikers/delete", method=RequestMethod.POST)  
-	public ModelAndView delete(@ModelAttribute("delete") Serializable id) {  
-		long longId = Long.parseLong((String) id);
+	public ModelAndView delete(@ModelAttribute("delete") String corpkey) {  
 		
-		if (longId == 0) {
+		if (corpkey.equalsIgnoreCase("admin")) {
 			return new ModelAndView ("redirect:/gebruikers");  
 		}
 		
-		portalDao.delete(longId);  
+		portalDao.delete(corpkey);  
 		return new ModelAndView ("redirect:/gebruikers");  
 	} 
 }

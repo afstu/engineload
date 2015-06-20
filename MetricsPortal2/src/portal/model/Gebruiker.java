@@ -1,35 +1,62 @@
 package portal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+// TODO: Auto-generated Javadoc
 /**
  * The Class Gebruiker.
  */
 @Entity
+@Table(name = "Gebruiker", uniqueConstraints = {
+		@UniqueConstraint(columnNames = "GEBRUIKER_CORPKEY")})
 public class Gebruiker {
-	
-	/** The Id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long Id;
-	
+
+	//	/** The Id. */
+	//	@Id
+	//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//	@Column(name = "GEBRUIKER_ID")
+	//	private long Id;
+
 	/** The Corp key. */
+	@Id
+	@Column(name = "GEBRUIKER_CORPKEY", unique = true, nullable = false, length = 6)
 	private String CorpKey;
-	
+
 	/** The Voornaam. */
-	private String Voornaam;
-	
+	@Column(name = "GEBRUIKER_VOORNAAM", unique = false, nullable = false, length = 20)
+	private String VoorNaam;
+
 	/** The Achternaam. */
-	private String Achternaam;
-	
+	@Column(name = "GEBRUIKER_ACHTERNAAM", unique = false, nullable = false, length = 30)
+	private String AchterNaam;
+
 	/** The Gebruiker beschrijving. */
+	@Column(name = "GEBRUIKER_BESCHRIJVING", unique = false, nullable = true, length = 200 )
 	private String GebruikerBeschrijving;
-	
+
 	/** The Wacht woord. */
+	@Column(name = "GEBRUIKER_WACHTWOORD", unique = false, nullable = false, length = 20)
 	private String WachtWoord;
+
+	/** The Gebruiker rollen. */
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "gebruiker_rol", joinColumns = { 
+			@JoinColumn(name = "GEBRUIKER_CORPKEY", nullable = false, updatable = true) }, 
+			inverseJoinColumns = { 
+			@JoinColumn(name = "ROL_NAAM", 
+			nullable = false, updatable = true) })
+	private Set<Rol> GebruikerRollen;
 
 	/**
 	 * Instantiates a new gebruiker.
@@ -37,23 +64,6 @@ public class Gebruiker {
 	public Gebruiker() {
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public long getId() {
-		return Id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(long id) {
-		Id = id;
-	}
 
 	/**
 	 * Gets the corp key.
@@ -79,7 +89,7 @@ public class Gebruiker {
 	 * @return the voor naam
 	 */
 	public String getVoornaam() {
-		return Voornaam;
+		return VoorNaam;
 	}
 
 	/**
@@ -88,7 +98,7 @@ public class Gebruiker {
 	 * @param voornaam the new voor naam
 	 */
 	public void setVoornaam(String voornaam) {
-		Voornaam = voornaam;
+		VoorNaam = voornaam;
 	}
 
 	/**
@@ -97,7 +107,7 @@ public class Gebruiker {
 	 * @return the achter naam
 	 */
 	public String getAchternaam() {
-		return Achternaam;
+		return AchterNaam;
 	}
 
 	/**
@@ -106,7 +116,7 @@ public class Gebruiker {
 	 * @param achternaam the new achter naam
 	 */
 	public void setAchternaam(String achternaam) {
-		Achternaam = achternaam;
+		AchterNaam = achternaam;
 	}
 
 	/**
@@ -144,4 +154,46 @@ public class Gebruiker {
 	public void setWachtWoord(String wachtWoord) {
 		WachtWoord = wachtWoord;
 	}
+
+	/**
+	 * Gets the gebruiker rollen.
+	 *
+	 * @return the gebruiker rollen
+	 */
+	public Set<Rol> getGebruikerRollen() {
+		return GebruikerRollen;
+	}
+
+	/**
+	 * Sets the gebruiker rollen.
+	 *
+	 * @param gebruikerRollen the new gebruiker rollen
+	 */
+	public void setGebruikerRollen(Set<Rol> gebruikerRollen) {
+		GebruikerRollen = gebruikerRollen;
+	}
+
+	/**
+	 * Gets the gebruiker rollen.
+	 *
+	 * @return the gebruiker rollen
+	 */
+	public String getGebruikerRollenString() {
+
+		StringBuilder sb = new StringBuilder();
+
+		Set<Rol> sr = getGebruikerRollen();
+
+		if (sr.isEmpty()) {
+			sb.append("Deze gebruiker heeft nog geen rol!");
+		} else {
+
+			for (Rol r : sr) {
+				sb.append(r.getRolNaam().toString() + " ");
+			}
+		}
+
+		return sb.toString();
+	}
+
 }

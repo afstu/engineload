@@ -3,8 +3,6 @@ package portal.DAO;
 import java.io.Serializable;
 import java.util.List;
 
-import portal.model.Gebruiker;
-
 public interface IportalDAO<T, PK extends Serializable> {
 	public List<T> list();
 	public T create(T t);

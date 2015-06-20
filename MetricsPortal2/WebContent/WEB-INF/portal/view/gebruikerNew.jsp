@@ -24,6 +24,10 @@
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="password" class="form-control" placeholder="P@55w0rD" aria-describedby="sizing-addon3" path="WachtWoord"/>
 		</div>
+						<div class="input-group input-group-sm">
+		  <span class="input-group-addon" id="sizing-addon3">@</span>
+  			<form:input type="password" class="form-control" placeholder="Rol" aria-describedby="sizing-addon3" path="GebruikerRollen"/>
+		</div>
 				<div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="text" class="form-control" placeholder="Beschrijving" aria-describedby="sizing-addon3" path="GebruikerBeschrijving"/>
