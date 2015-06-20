@@ -48,26 +48,26 @@ public class RolDAOImpl implements IportalDAO<Rol, Serializable> {
 
 	@Override
 	public Rol create(Rol t) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().persist(t);
+		return t;
 	}
 
 	@Override
 	public Rol read(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
+		Rol g = (Rol) sessionFactory.getCurrentSession().get(Rol.class, id);
+		return g;
 	}
 
 	@Override
 	public Rol update(Rol t) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().update(t);
+		return t;
 	}
 
 	@Override
 	public void delete(Serializable id) {
-		// TODO Auto-generated method stub
-
+		Rol g = (Rol) sessionFactory.getCurrentSession().get(Rol.class, id);
+		sessionFactory.getCurrentSession().delete(g);		
 	}
 
 }

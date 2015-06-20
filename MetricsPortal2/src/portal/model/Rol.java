@@ -20,15 +20,14 @@ public class Rol implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//	/** The Id. */
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "ROL_ID")
-//	private long Id;
+		/** The Id. */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ROL_ID")
+	private long Id;
 	
 	/** The Rol naam. */
-	@Id
-	@Column(name = "ROL_NAAM", unique = true, nullable = false, length = 20)
+	@Column(name = "ROL_NAAM", unique = true, updatable = true, nullable = false, length = 20)
 	private String RolNaam;
 	
 	/** The Rol beschrijving. */
@@ -42,6 +41,22 @@ public class Rol implements Serializable {
 	public Rol() {		
 	}
 	
+
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return Id;
+	}
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		Id = id;
+	}
+
 
 	/**
 	 * Gets the rol naam.

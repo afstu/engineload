@@ -25,13 +25,7 @@
 						<td>${Cluster.getClusterNaam()}</td>
 						<td>${Cluster.getClusterStatus()}</td>
 							<td>${Cluster.getClusterDirector().getDirectorNaam()}</td>
-						<td>
-						<ul class=list-group>
-										<c:forEach var="Rol" items="${Cluster.getClusterRollen()}">
-						<li class=list-group-item>${Rol.getRolNaam()}</li>
-									</c:forEach>
-						</ul>
-						</td>
+						<td>${Cluster.getClusterRollen()}</td>
 						<td>${Cluster.getClusterBeschrijving()}</td>
 
 								<td><form:form method='GET'

@@ -54,7 +54,7 @@ public class Gebruiker {
 	@JoinTable(name = "gebruiker_rol", joinColumns = { 
 			@JoinColumn(name = "GEBRUIKER_CORPKEY", nullable = false, updatable = true) }, 
 			inverseJoinColumns = { 
-			@JoinColumn(name = "ROL_NAAM", 
+			@JoinColumn(name = "ROL_ID", 
 			nullable = false, updatable = true) })
 	private Set<Rol> GebruikerRollen;
 
@@ -174,7 +174,7 @@ public class Gebruiker {
 	}
 
 	/**
-	 * Gets the gebruiker rollen.
+	 * Gets the gebruiker rollen as a string.
 	 *
 	 * @return the gebruiker rollen
 	 */
@@ -195,5 +195,4 @@ public class Gebruiker {
 
 		return sb.toString();
 	}
-
 }

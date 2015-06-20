@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import portal.model.Cluster;
 import portal.model.Graphite;
 
 @Repository
@@ -54,14 +55,16 @@ public class GraphiteDAOImpl implements IportalDAO<Graphite, Serializable> {
 
 	@Override
 	public Graphite read(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
+		Graphite g = (Graphite) sessionFactory.getCurrentSession().get(Graphite.class, id);
+		return g;
 	}
 
 	@Override
 	public Graphite update(Graphite g) {
 		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().update(g);
+		sessionFactory.getCurrentSession().flush();
+		return g;
 	}
 
 	@Override

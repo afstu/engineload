@@ -29,13 +29,7 @@
 						<td>${Cluster.getClusterStatus()}</td>
 						<td>${Cluster.getClusterDirectorNaam()}</td>
 						<td>${Cluster.getClusterBeschrijving()}</td>
-						<td>
-							<ul class=list-group>
-								<c:forEach var="Rol" items="${Cluster.getClusterRollen()}">
-									<li class="list-group-item">${Rol.getRolNaam()}</li>
-								</c:forEach>
-							</ul>
-						</td>
+						<td>${Cluster.getClusterRollenString()}</td>
 
 						<td><form:form method='GET'
 								action='/MetricsPortal2/clusters/update'>

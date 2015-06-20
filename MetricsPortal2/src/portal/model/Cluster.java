@@ -52,7 +52,7 @@ public class Cluster implements Serializable {
 //			@JoinColumn(name = "CLUSTER_STATUS", insertable = false, nullable = false, updatable = false),
 //			@JoinColumn(name = "CLUSTER_NAAM", insertable = false, nullable = false, updatable = false)},			
 			inverseJoinColumns = {
-			@JoinColumn(name = "ROL_NAAM", 
+			@JoinColumn(name = "ROL_ID", 
 					insertable = false, nullable = false, updatable = false) })
 	private Set<Rol> ClusterRollen;
 	
@@ -179,4 +179,27 @@ public class Cluster implements Serializable {
 	public void setClusterId(long clusterId) {
 		ClusterId = clusterId;
 	}
+	/**
+	 * Gets the Cluster rollen as a string.
+	 *
+	 * @return the Cluster rollen
+	 */
+	public String getClusterRollenString() {
+
+		StringBuilder sb = new StringBuilder();
+
+		Set<Rol> sr = getClusterRollen();
+
+		if (sr.isEmpty()) {
+			sb.append("Dit Cluster heeft nog geen rol!");
+		} else {
+
+			for (Rol r : sr) {
+				sb.append(r.getRolNaam().toString() + " ");
+			}
+		}
+
+		return sb.toString();
+	}
+	
 }

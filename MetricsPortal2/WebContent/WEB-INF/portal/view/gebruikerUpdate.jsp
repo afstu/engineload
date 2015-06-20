@@ -37,7 +37,7 @@
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon" id="sizing-addon3">@</span>
 									<spring:bind path="GebruikerRollen">
-  								<input id="gr" name="GebruikerRollen" type="text" class="form-control" value="${gebruiker.getGebruikerRollen()}" />
+  								<input id="gr" name="GebruikerRollen" type="text" class="form-control" value="${gebruiker.getGebruikerRollenString()}" disabled/>
 						</spring:bind>
 						</div>
 			<div class="input-group input-group-sm">
