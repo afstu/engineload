@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -14,7 +14,7 @@
 						<th>Achternaam</th>
 						
 						<th>Beschrijving</th>
-						<th colspan=2>Gebruiker Tools</th>
+						<th colspan=3>Gebruiker Tools</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -25,11 +25,18 @@
 						<td>${gebruiker.getAchternaam()}</td>
 						<td>${gebruiker.getGebruikerBeschrijving()}</td>
 						
+						<td>
+<div class="input-group input-group-xs">
+<div class="btn-group-xs" role="group" aria-label="...">
+  			 <a href="/gebruikers" class="btn btn-success" role="button">OK</a>
+		</div>
+		</div>
+</td>
 								<c:choose>
 									<c:when test="${gebruiker.getCorpKey()=='admin'}">
 									<td>
 								<form:form method='GET'
-											action='/MetricsPortal2/gebruikers/update/'
+											action='/gebruikers/update/'
 											modelAttribute="gebruiker">
 												<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getCorpKey()} >Edit</button>
@@ -40,7 +47,7 @@
 									<c:otherwise>
 								<td>
 										<form:form method='GET'
-											action='/MetricsPortal2/gebruikers/update/'
+											action='/gebruikers/update/'
 											modelAttribute="gebruiker">
 												<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default" value=${gebruiker.getCorpKey()} >Edit</button>
@@ -49,7 +56,7 @@
 										</td>
 										<td>
 										<form:form method='POST'
-											action='/MetricsPortal2/gebruikers/delete/' >
+											action='/gebruikers/delete/' >
 												<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger" value=${gebruiker.getCorpKey()} >Delete</button>
 											</div>
@@ -67,4 +74,4 @@
 	</div>
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

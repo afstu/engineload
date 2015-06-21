@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 
 <div class="panel panel-default">
@@ -16,7 +16,7 @@
 					<th>Cluster Director</th>
 					<th>Cluster Beschrijving</th>
 					<th>Cluster Rollen</th>
-					<th colspan=2>Cluster Tools</th>
+					<th colspan=3>Cluster Tools</th>
 					
 				</tr>
 			</thead>
@@ -27,9 +27,15 @@
 							<td>${Cluster.getClusterDirector().getDirectorNaam()}</td>
 						<td>${Cluster.getClusterRollen()}</td>
 						<td>${Cluster.getClusterBeschrijving()}</td>
-
+<td>
+<div class="input-group input-group-xs">
+<div class="btn-group-xs" role="group" aria-label="...">
+  			 <a href="/clusters" class="btn btn-success" role="button">OK</a>
+		</div>
+		</div>
+</td>
 								<td><form:form method='GET'
-										action='/MetricsPortal2/clusters/update'
+										action='/clusters/update'
 										modelAttribute="Cluster">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default"
@@ -37,7 +43,7 @@
 										</div>
 									</form:form></td>
 								<td><form:form method='POST'
-										action='/MetricsPortal2/clusters/delete/' modelAttribute="Cluster">
+										action='/clusters/delete/' modelAttribute="Cluster">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger"
 												value="${Cluster.getId()}">Delete</button>
@@ -53,4 +59,4 @@
 
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

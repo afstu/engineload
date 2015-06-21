@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,24 +48,20 @@ public class Cluster implements Serializable {
 	private String ClusterStatus;
 	
 	/** The Rol. */
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "cluster_rol", joinColumns = {
-			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},
-//			@JoinColumn(name = "CLUSTER_STATUS", insertable = false, nullable = false, updatable = false),
-//			@JoinColumn(name = "CLUSTER_NAAM", insertable = false, nullable = false, updatable = false)},			
+			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},		
 			inverseJoinColumns = {
 			@JoinColumn(name = "ROL_ID", 
 					insertable = false, nullable = false, updatable = false) })
 	private Set<Rol> ClusterRollen;
 	
 	/** The director. */
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "cluster_director", joinColumns = { 
-			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},
-//			@JoinColumn(name = "CLUSTER_STATUS", insertable = false, nullable = false, updatable = false),
-//			@JoinColumn(name = "CLUSTER_NAAM", insertable = false, nullable = false, updatable = false)}, 
-			inverseJoinColumns = { @JoinColumn(name = "DIRECTOR_NAAM", 
-					insertable = false, nullable = false, updatable = false) })
+			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)}, 
+			inverseJoinColumns = { @JoinColumn(name = "DIRECTOR_ID", 
+					insertable = false, nullable = false, updatable = false)})
 	private Director ClusterDirector;
 	
 	/** The Cluster beschrijving. */

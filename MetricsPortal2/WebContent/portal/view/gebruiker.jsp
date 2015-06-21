@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h4 class="panel-title">Portal Clusters</h4>
+		<h4 class="panel-title">Portal Gebruikers</h4>
 	</div>
 	<div class="panel-body">
 
@@ -11,54 +11,69 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Rol Naam</th>
-					<th>Rol Beschrijving</th>
-					<th colspan=2>Rol Tools</th>
+					<th>CorpKey</th>
+					<th>Voornaam</th>
+					<th>Achternaam</th>
+					<th>Beschrijving</th>
+					<th>Rollen</th>
+					<th colspan=2>Gebruiker Tools</th>
+
 				</tr>
 			</thead>
 			<tbody>
 
-				<c:forEach var="Rol" items="${rolList}">
+				<c:forEach var="gebruiker" items="${gebruikerList}">
+
 
 					<tr>
-						<td>${Rol.getRolNaam()}</td>
-						<td>${Rol.getRolBeschrijving()}</td>
+						<td>${gebruiker.getCorpKey()}</td>
+						<td>${gebruiker.getVoornaam()}</td>
+						<td>${gebruiker.getAchternaam()}</td>
+
+						<td>${gebruiker.getGebruikerBeschrijving()}</td>
+						<td>
+							${gebruiker.getGebruikerRollenString()}
+						</td>
 						<c:choose>
-							<c:when test="${Rol.getId()=='0'}">
+
+							<c:when test="${gebruiker.getCorpKey()=='admin'}">
 								<td><form:form method='GET'
-										action='/MetricsPortal2/rollen/update'
+										action='/gebruikers/update'
 										modelAttribute="gebruiker">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default"
-												value="${Rol.getId()}">Edit</button>
+												value="${gebruiker.getCorpKey()}" >Edit</button>
 										</div>
-									</form:form>
+									</form:form></td>
+															
 								<td><form:form method='POST'
-										action='/MetricsPortal2/rollen/delete/'>
+										action='/gebruikers/delete/'>
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger"
-												value="${Rol.getId()}" disabled>Delete</button>
+												value="${gebruiker.getCorpKey()}" disabled >Delete</button>
 										</div>
 									</form:form></td>
 							</c:when>
 							<c:otherwise>
 								<td><form:form method='GET'
-										action='/MetricsPortal2/rollen/update'
+										action='/gebruikers/update'
 										modelAttribute="gebruiker">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default"
-												value="${Rol.getId()}">Edit</button>
+												value="${gebruiker.getCorpKey()}" >Edit</button>
 										</div>
 									</form:form></td>
 								<td><form:form method='POST'
-										action='/MetricsPortal2/rollen/delete/'>
+										action='/gebruikers/delete/'>
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger"
-												value="${Rol.getId()}">Delete</button>
+												value="${gebruiker.getCorpKey()}">Delete</button>
 										</div>
 									</form:form></td>
 							</c:otherwise>
+
 						</c:choose>
+
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -70,4 +85,4 @@
 
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

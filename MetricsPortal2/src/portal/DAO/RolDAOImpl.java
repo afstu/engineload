@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import portal.model.Cluster;
+import portal.model.Gebruiker;
 import portal.model.Rol;
 
 @Repository
@@ -66,8 +68,24 @@ public class RolDAOImpl implements IportalDAO<Rol, Serializable> {
 
 	@Override
 	public void delete(Serializable id) {
-		Rol g = (Rol) sessionFactory.getCurrentSession().get(Rol.class, id);
-		sessionFactory.getCurrentSession().delete(g);		
+			
+		Rol r = (Rol) sessionFactory.getCurrentSession().get(Rol.class, id);
+		
+		for (Cluster c : r.getRolClusters()) {
+			if (c != null) {
+			c.getClusterRollen().remove(r);
+			sessionFactory.getCurrentSession().update(c);
+			}
+		}
+		
+		for (Gebruiker g : r.getRolGebruikers()) {
+			if (g != null) {
+			g.getGebruikerRollen().remove(r);
+			sessionFactory.getCurrentSession().update(g);
+			}
+		}
+		
+		sessionFactory.getCurrentSession().delete(r);		
 	}
 
 }

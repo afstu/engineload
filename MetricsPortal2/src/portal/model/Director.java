@@ -1,10 +1,19 @@
 package portal.model;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -13,18 +22,21 @@ import javax.persistence.UniqueConstraint;
  * The Class Director.
  */
 @Entity
-@Table(name = "Director", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "DIRECTOR_NAAM")})
-public class Director {
+@Table(name = "Director")
+public class Director implements Serializable {
 	
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 //	/** The Id. */
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "DIRECTOR_ID")
-//	private long Id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "DIRECTOR_ID")
+	private long Id;
 	
 	/** The Director naam. */
-	@Id
 	@Column(name = "DIRECTOR_NAAM", unique = true, nullable = false, length = 30)
 	private String DirectorNaam;
 	
@@ -43,12 +55,44 @@ public class Director {
 	/** The Director beschrijving. */
 	@Column(name = "DIRECTOR_BESCHRIJVING", unique = false, nullable = true, length = 200)
 	private String DirectorBeschrijving;
+	
+	/** The Cluster. */
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Cluster DirectorCluster;
 
 	/**
 	 * Instantiates a new director.
 	 */
 	public Director() {
 		
+	}
+
+	/**
+	 * @return the directorCluster
+	 */
+	public Cluster getDirectorCluster() {
+		return DirectorCluster;
+	}
+
+	/**
+	 * @param directorCluster the directorCluster to set
+	 */
+	public void setDirectorCluster(Cluster directorCluster) {
+		DirectorCluster = directorCluster;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return Id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		Id = id;
 	}
 
 	/**

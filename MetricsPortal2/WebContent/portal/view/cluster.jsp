@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 
 <div class="panel panel-default">
@@ -32,14 +32,14 @@
 						<td>${Cluster.getClusterRollenString()}</td>
 
 						<td><form:form method='GET'
-								action='/MetricsPortal2/clusters/update'>
+								action='/clusters/update'>
 								<div class="btn-group-xs" role="group" aria-label="...">
 									<button type="submit" name="update" class="btn btn-default"
 										value="${Cluster.getClusterId()}">Edit</button>
 								</div>
 							</form:form></td>
 						<td><form:form method='POST'
-								action='/MetricsPortal2/clusters/delete/'>
+								action='/clusters/delete/'>
 								<div class="btn-group-xs" role="group" aria-label="...">
 									<button type="submit" name="delete" class="btn btn-danger"
 										value="${Cluster.getClusterId()}">Delete</button>
@@ -56,4 +56,4 @@
 
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

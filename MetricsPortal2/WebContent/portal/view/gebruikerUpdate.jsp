@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="panel-body">
-		<form:form method='POST' action='/MetricsPortal2/gebruikers/update'
+		<form:form method='POST' action='/gebruikers/update'
 			modelAttribute="gebruiker">
 
 
@@ -57,4 +57,4 @@
 </div>
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

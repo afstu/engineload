@@ -18,16 +18,19 @@
 
 	<mvc:annotation-driven />
 	<tx:annotation-driven />
+	
 	<mvc:default-servlet-handler/>
-	<!-- <mvc:view-controller path="/" view-name="home"/> -->
-	<resources mapping="/resources/**" location="/WEB-INF/portal/resources/" />
-	<resources mapping="/scripts/**" location="/WEB-INF/portal/scripts/" />
+	<mvc:view-controller path="/" view-name="home"/>
+	
+<!-- 	<resources mapping="/resources/**" location="/MetricsPortal2/portal/resources/" /> -->
+<!-- 	<resources mapping="/scripts/**" location="/MetricsPortal2/portal/scripts/" /> -->
+	
 	<context:component-scan base-package="portal.controller" />
 
 	<!-- View Resolver Bean -->
 	<beans:bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/portal/view/" />
+		<beans:property name="prefix" value="/portal/view/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 

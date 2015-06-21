@@ -1,12 +1,18 @@
 package portal.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -23,7 +29,8 @@ public class Rol implements Serializable {
 		/** The Id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ROL_ID")
+//	@ManyToMany(mappedBy="Gebruiker")
+	@Column(name = "ROL_ID", nullable=false)
 	private long Id;
 	
 	/** The Rol naam. */
@@ -34,6 +41,14 @@ public class Rol implements Serializable {
 	@Column(name = "ROL_BESCHRIJVING" , unique = false, nullable = true, length = 200)
 	private String RolBeschrijving;
 	
+	/** The Cluster. */
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Cluster> RolClusters;
+	
+	/** The Gebruiker. */
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Gebruiker> RolGebruikers;
+	
 	
 	/**
 	 * Instantiates a new rol.
@@ -41,6 +56,38 @@ public class Rol implements Serializable {
 	public Rol() {		
 	}
 	
+
+	/**
+	 * @return the rolClusters
+	 */
+	public Set<Cluster> getRolClusters() {
+		return RolClusters;
+	}
+
+
+	/**
+	 * @param rolClusters the rolClusters to set
+	 */
+	public void setRolClusters(Set<Cluster> rolClusters) {
+		RolClusters = rolClusters;
+	}
+
+
+	/**
+	 * @return the rolGebruikers
+	 */
+	public Set<Gebruiker> getRolGebruikers() {
+		return RolGebruikers;
+	}
+
+
+	/**
+	 * @param rolGebruikers the rolGebruikers to set
+	 */
+	public void setRolGebruikers(Set<Gebruiker> rolGebruikers) {
+		RolGebruikers = rolGebruikers;
+	}
+
 
 	/**
 	 * @return the id

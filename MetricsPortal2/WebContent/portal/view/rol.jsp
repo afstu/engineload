@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 
 <div class="panel panel-default">
@@ -13,20 +13,20 @@
 				<tr>
 					<th>Rol Naam</th>
 					<th>Rol Beschrijving</th>
-					
 					<th colspan=2>Rol Tools</th>
-					
 				</tr>
 			</thead>
 			<tbody>
+
+				<c:forEach var="Rol" items="${rolList}">
+
 					<tr>
 						<td>${Rol.getRolNaam()}</td>
 						<td>${Rol.getRolBeschrijving()}</td>
-
-					<c:choose>
+						<c:choose>
 							<c:when test="${Rol.getId()=='0'}">
 								<td><form:form method='GET'
-										action='/MetricsPortal2/rollen/update'
+										action='/rollen/update'
 										modelAttribute="gebruiker">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default"
@@ -34,7 +34,7 @@
 										</div>
 									</form:form>
 								<td><form:form method='POST'
-										action='/MetricsPortal2/rollen/delete/'>
+										action='/rollen/delete/'>
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger"
 												value="${Rol.getId()}" disabled>Delete</button>
@@ -43,7 +43,7 @@
 							</c:when>
 							<c:otherwise>
 								<td><form:form method='GET'
-										action='/MetricsPortal2/rollen/update'
+										action='/rollen/update'
 										modelAttribute="gebruiker">
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="update" class="btn btn-default"
@@ -51,7 +51,7 @@
 										</div>
 									</form:form></td>
 								<td><form:form method='POST'
-										action='/MetricsPortal2/rollen/delete/'>
+										action='/rollen/delete/'>
 										<div class="btn-group-xs" role="group" aria-label="...">
 											<button type="submit" name="delete" class="btn btn-danger"
 												value="${Rol.getId()}">Delete</button>
@@ -60,6 +60,7 @@
 							</c:otherwise>
 						</c:choose>
 					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
@@ -69,4 +70,4 @@
 
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

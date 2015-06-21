@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -19,7 +19,7 @@
 				<td>${graphite.getGraphiteUrl()}</td>
 
 				<td><form:form method='GET'
-						action='/MetricsPortal2/graphite/update' modelAttribute="graphite">
+						action='/graphite/update' modelAttribute="graphite">
 						<div class="btn-group-xs" role="group" aria-label="...">
 							<button type="submit" name="update" class="btn btn-danger"
 								value="${graphite.getId()}">Edit</button>
@@ -33,4 +33,4 @@
 </div>
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

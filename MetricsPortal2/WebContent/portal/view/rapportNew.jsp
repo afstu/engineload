@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
-<%@ include file="/WEB-INF/portal/resources/datePicker.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/datePicker.jsp"%>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<form:form method='POST' action='/MetricsPortal2/rapporten/create' modelAttribute="Rapport">
+<form:form method='POST' action='/rapporten/create' modelAttribute="Rapport">
 		 <button type="submit" class="btn btn-default">Verzenden</button>
 		</form:form>
 
@@ -45,4 +45,4 @@
 </div>
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>
+<%@ include file="/portal/resources/footer.jsp"%>

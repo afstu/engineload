@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/portal/resources/header.jsp"%>
+<%@ include file="/portal/resources/header.jsp"%>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -6,8 +6,8 @@
 	</div>
 	
 	<div class="panel-body">
-<form:form method='POST' action='/MetricsPortal2/rollen/create' modelAttribute="Rol">
-	
+<form:form method='POST' action='/rollen/create' modelAttribute="Rol">
+		
 		<div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="text" class="form-control" placeholder="Rolnaam" aria-describedby="sizing-addon3" path="RolNaam"/>
@@ -25,4 +25,3 @@
 </div>
 
 
-<%@ include file="/WEB-INF/portal/resources/footer.jsp"%>

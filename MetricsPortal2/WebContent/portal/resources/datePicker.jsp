@@ -1,6 +1,6 @@
-<link rel="stylesheet" type="text/css" href="/MetricsPortal2/scripts/css/bootstrap-datetimepicker.min.css"/>
-<script src="/MetricsPortal2/scripts/js/Moment.js"></script>
-<script src="/MetricsPortal2/scripts/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="..\portal/scripts/css/bootstrap-datetimepicker.min.css"/>
+<script src="..\portal/scripts/js/Moment.js"></script>
+<script src="..\portal/scripts/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
