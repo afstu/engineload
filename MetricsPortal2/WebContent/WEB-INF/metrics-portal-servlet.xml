@@ -18,7 +18,7 @@
 
 	<mvc:annotation-driven />
 	<tx:annotation-driven />
-	<!-- <mvc:default-servlet-handler/> -->
+	<mvc:default-servlet-handler/>
 	<!-- <mvc:view-controller path="/" view-name="home"/> -->
 	<resources mapping="/resources/**" location="/WEB-INF/portal/resources/" />
 	<resources mapping="/scripts/**" location="/WEB-INF/portal/scripts/" />

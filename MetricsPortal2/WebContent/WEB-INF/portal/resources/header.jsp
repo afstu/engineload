@@ -50,8 +50,16 @@
             				<li><a href="/MetricsPortal2/gebruikers">List Gebruikers</a></li>
             			</ul>
             			</li>
-                        <li ><a href="/MetricsPortal2/graphite"><span class="glyphicon glyphicon-cog"> Graphite</a></li>
-                        <li ><a href="/MetricsPortal2/rapporten"><span class="glyphicon glyphicon-stats"> Rapporten</a></li>
+            			<li class="dropdown">
+                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-stats"> Rapporten</span></a>
+                        <ul class="dropdown-menu" role="menu">
+            				<li><a href="/MetricsPortal2/rapporten/create">Rapport Aanmaken</a></li>
+            				<li><a href="/MetricsPortal2/rapporten">Standaard Rapport</a></li>
+            			</ul>
+            			</li>
+            			
+                        <li ><a href="/MetricsPortal2/graphite"><span class="glyphicon glyphicon-cog"> Graphite</span></a></li>
+                        
                     </ul>
                 </div>
             </div>
