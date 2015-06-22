@@ -6,7 +6,7 @@
 	</div>
 	
 	<div class="panel-body">
-<form:form method='POST' action='/gebruikers/create' modelAttribute="gebruiker">
+<form:form method='POST' action='/gebruikers/create' modelAttribute="Gebruiker">
 	
 		<div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
@@ -29,6 +29,15 @@
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="text" class="form-control" placeholder="Beschrijving" aria-describedby="sizing-addon3" path="GebruikerBeschrijving"/>
 		</div>
+	
+<%-- 	<c:forEach var="Rol" items="${RolList}"> --%>
+<!-- 					<div class="input-group input-group-sm"> -->
+<!-- 		  <span class="input-group-addon" id="sizing-addon3"><input type="checkbox" aria-label="..."></span> -->
+<%--   			<form:input class="form-control" aria-describedby="sizing-addon3" name="RolList" id="RolList" value="${Rol.getId()}" path="${RolList[i].rl}" readonly="true"/> --%>
+<!-- 		</div>		 -->
+<%-- 						</c:forEach> --%>
+	
+					
 	
 		 <button type="submit" class="btn btn-default">Opslaan</button>
 		</form:form>

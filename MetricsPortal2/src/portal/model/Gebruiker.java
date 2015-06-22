@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,8 +20,7 @@ import javax.persistence.UniqueConstraint;
  * The Class Gebruiker.
  */
 @Entity
-@Table(name = "Gebruiker", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "GEBRUIKER_CORPKEY")})
+@Table(name = "Gebruikers")
 public class Gebruiker {
 
 	//	/** The Id. */
@@ -51,11 +52,7 @@ public class Gebruiker {
 
 	/** The Gebruiker rollen. */
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "gebruiker_rol", joinColumns = { 
-			@JoinColumn(name = "GEBRUIKER_CORPKEY", nullable = false, updatable = true) }, 
-			inverseJoinColumns = { 
-			@JoinColumn(name = "ROL_ID", 
-			nullable = false, updatable = true) })
+	@JoinTable(name="GEBRUIKER_ROL",joinColumns=@JoinColumn(name="GEBRUIKER_CORPKEY"),inverseJoinColumns=@JoinColumn(name="ROL_ID") )
 	private Set<Rol> GebruikerRollen;
 
 	/**
@@ -172,27 +169,8 @@ public class Gebruiker {
 	public void setGebruikerRollen(Set<Rol> gebruikerRollen) {
 		GebruikerRollen = gebruikerRollen;
 	}
-
-	/**
-	 * Gets the gebruiker rollen as a string.
-	 *
-	 * @return the gebruiker rollen
-	 */
-	public String getGebruikerRollenString() {
-
-		StringBuilder sb = new StringBuilder();
-
-		Set<Rol> sr = getGebruikerRollen();
-
-		if (sr.isEmpty()) {
-			sb.append("Deze gebruiker heeft nog geen rol!");
-		} else {
-
-			for (Rol r : sr) {
-				sb.append(r.getRolNaam().toString() + " ");
-			}
-		}
-
-		return sb.toString();
+	
+	public void addRol(Rol r) {
+		GebruikerRollen.add(r);
 	}
 }

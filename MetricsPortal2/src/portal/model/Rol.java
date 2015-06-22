@@ -2,6 +2,7 @@ package portal.model;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,12 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Rol.
  */
 @Entity
+@Table(name = "Rollen")
 public class Rol implements Serializable {
 	
 /**
@@ -29,7 +34,6 @@ public class Rol implements Serializable {
 		/** The Id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@ManyToMany(mappedBy="Gebruiker")
 	@Column(name = "ROL_ID", nullable=false)
 	private long Id;
 	
@@ -42,11 +46,13 @@ public class Rol implements Serializable {
 	private String RolBeschrijving;
 	
 	/** The Cluster. */
+	@Column(name = "ROL_CLUSTERS" , unique = false, nullable = true)
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Cluster> RolClusters;
 	
 	/** The Gebruiker. */
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Column(name = "ROL_GEBRUIKERS" , unique = false, nullable = true)
+	@OneToMany(mappedBy="GebruikerRollen", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Gebruiker> RolGebruikers;
 	
 	
@@ -66,7 +72,7 @@ public class Rol implements Serializable {
 
 
 	/**
-	 * @param rolClusters the rolClusters to set
+	 * @param rolClusters the rolClusters to Set
 	 */
 	public void setRolClusters(Set<Cluster> rolClusters) {
 		RolClusters = rolClusters;
@@ -82,12 +88,11 @@ public class Rol implements Serializable {
 
 
 	/**
-	 * @param rolGebruikers the rolGebruikers to set
+	 * @param rolGebruikers the rolGebruikers to Set
 	 */
 	public void setRolGebruikers(Set<Gebruiker> rolGebruikers) {
 		RolGebruikers = rolGebruikers;
 	}
-
 
 	/**
 	 * @return the id
@@ -98,7 +103,7 @@ public class Rol implements Serializable {
 
 
 	/**
-	 * @param id the id to set
+	 * @param id the id to Set
 	 */
 	public void setId(long id) {
 		Id = id;
@@ -140,4 +145,5 @@ public class Rol implements Serializable {
 	public void setRolBeschrijving(String rolBeschrijving) {
 		RolBeschrijving = rolBeschrijving;
 	}
+
 }

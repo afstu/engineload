@@ -71,19 +71,19 @@ public class RolDAOImpl implements IportalDAO<Rol, Serializable> {
 			
 		Rol r = (Rol) sessionFactory.getCurrentSession().get(Rol.class, id);
 		
-		for (Cluster c : r.getRolClusters()) {
-			if (c != null) {
-			c.getClusterRollen().remove(r);
-			sessionFactory.getCurrentSession().update(c);
-			}
-		}
-		
-		for (Gebruiker g : r.getRolGebruikers()) {
-			if (g != null) {
-			g.getGebruikerRollen().remove(r);
-			sessionFactory.getCurrentSession().update(g);
-			}
-		}
+//		for (Cluster c : r.getRolClusters()) {
+//			if (c != null) {
+//			c.getClusterRollen().remove(r);
+//			sessionFactory.getCurrentSession().update(c);
+//			}
+//		}
+//		
+//		for (Gebruiker g : r.getRolGebruikers()) {
+//			if (g != null) {
+//			g.getGebruikerRollen().remove(r);
+//			sessionFactory.getCurrentSession().update(g);
+//			}
+//		}
 		
 		sessionFactory.getCurrentSession().delete(r);		
 	}

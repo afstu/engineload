@@ -32,7 +32,9 @@
 
 						<td>${gebruiker.getGebruikerBeschrijving()}</td>
 						<td>
-							${gebruiker.getGebruikerRollenString()}
+										<c:forEach var="Rol" items="${gebruiker.getGebruikerRollen()}">
+							${Rol.getRolNaam()}
+						</c:forEach>
 						</td>
 						<c:choose>
 

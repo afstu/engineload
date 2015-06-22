@@ -26,6 +26,7 @@
 <!-- 	<resources mapping="/scripts/**" location="/MetricsPortal2/portal/scripts/" /> -->
 	
 	<context:component-scan base-package="portal.controller" />
+	<context:component-scan base-package="portal.model" />
 
 	<!-- View Resolver Bean -->
 	<beans:bean id="viewResolver"

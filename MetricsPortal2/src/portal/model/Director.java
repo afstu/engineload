@@ -57,7 +57,7 @@ public class Director implements Serializable {
 	private String DirectorBeschrijving;
 	
 	/** The Cluster. */
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="ClusterDirector")
 	private Cluster DirectorCluster;
 
 	/**

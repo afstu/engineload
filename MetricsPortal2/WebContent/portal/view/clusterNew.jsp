@@ -20,6 +20,10 @@
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="text" class="form-control" placeholder="Clusterdirector" aria-describedby="sizing-addon3" path="ClusterDirector"/>
 		</div>
+						<div class="input-group input-group-sm">
+		  <span class="input-group-addon" id="sizing-addon3">@</span>
+  			<form:input type="text" class="form-control" placeholder="Rollen" aria-describedby="sizing-addon3" path="ClusterRollen"/>
+		</div>
 				<div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon3">@</span>
   			<form:input type="text" class="form-control" placeholder="Beschrijving" aria-describedby="sizing-addon3" path="ClusterBeschrijving"/>

@@ -27,7 +27,7 @@
 					<tr>
 						<td>${Cluster.getClusterNaam()}</td>
 						<td>${Cluster.getClusterStatus()}</td>
-						<td>${Cluster.getClusterDirectorNaam()}</td>
+						<td>${Cluster.getClusterDirector().getDirectorNaam()}</td>
 						<td>${Cluster.getClusterBeschrijving()}</td>
 						<td>${Cluster.getClusterRollenString()}</td>
 

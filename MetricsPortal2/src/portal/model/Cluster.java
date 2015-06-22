@@ -2,6 +2,7 @@ package portal.model;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import javax.persistence.Id;
  * The Class Cluster.
  */
 @Entity
-@Table(name = "Cluster")
+@Table(name = "Clusters")
 public class Cluster implements Serializable {
 	
 	/**
@@ -49,19 +50,12 @@ public class Cluster implements Serializable {
 	
 	/** The Rol. */
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "cluster_rol", joinColumns = {
-			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)},		
-			inverseJoinColumns = {
-			@JoinColumn(name = "ROL_ID", 
-					insertable = false, nullable = false, updatable = false) })
+	@JoinTable(name="CLUSTER_ROL",joinColumns=@JoinColumn(name="CLUSTER_ID"),inverseJoinColumns=@JoinColumn(name="ROL_ID") )
 	private Set<Rol> ClusterRollen;
 	
 	/** The director. */
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "cluster_director", joinColumns = { 
-			@JoinColumn(name = "CLUSTER_ID", insertable = false, nullable = false, updatable = false)}, 
-			inverseJoinColumns = { @JoinColumn(name = "DIRECTOR_ID", 
-					insertable = false, nullable = false, updatable = false)})
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name="CLUSTER_DIRECTOR",joinColumns=@JoinColumn(name="CLUSTER_ID"),inverseJoinColumns=@JoinColumn(name="DIRECTOR_ID") )
 	private Director ClusterDirector;
 	
 	/** The Cluster beschrijving. */
@@ -82,7 +76,7 @@ public class Cluster implements Serializable {
 	}
 
 	/**
-	 * @param clusterNaam the clusterNaam to set
+	 * @param clusterNaam the clusterNaam to Set
 	 */
 	public void setClusterNaam(String clusterNaam) {
 		ClusterNaam = clusterNaam;
@@ -96,7 +90,7 @@ public class Cluster implements Serializable {
 	}
 
 	/**
-	 * @param clusterStatus the clusterStatus to set
+	 * @param clusterStatus the clusterStatus to Set
 	 */
 	public void setClusterStatus(String clusterStatus) {
 		ClusterStatus = clusterStatus;
@@ -126,7 +120,13 @@ public class Cluster implements Serializable {
 	 * @return the cluster director naam
 	 */
 	public String getClusterDirectorNaam() {
-		return ClusterDirector.getDirectorNaam();
+		String dirNaam = getClusterDirector().getDirectorNaam();
+		
+		if (dirNaam.isEmpty()) {
+			dirNaam = "Dit Cluster heeft nog geen director!";
+		}
+		
+		return dirNaam;
 	}
 
 	/**
@@ -172,32 +172,9 @@ public class Cluster implements Serializable {
 	}
 
 	/**
-	 * @param clusterId the clusterId to set
+	 * @param clusterId the clusterId to Set
 	 */
 	public void setClusterId(long clusterId) {
 		ClusterId = clusterId;
-	}
-	/**
-	 * Gets the Cluster rollen as a string.
-	 *
-	 * @return the Cluster rollen
-	 */
-	public String getClusterRollenString() {
-
-		StringBuilder sb = new StringBuilder();
-
-		Set<Rol> sr = getClusterRollen();
-
-		if (sr.isEmpty()) {
-			sb.append("Dit Cluster heeft nog geen rol!");
-		} else {
-
-			for (Rol r : sr) {
-				sb.append(r.getRolNaam().toString() + " ");
-			}
-		}
-
-		return sb.toString();
-	}
-	
+	}	
 }

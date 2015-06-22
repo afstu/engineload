@@ -2,6 +2,7 @@ package portal.controller;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import portal.DAO.IportalDAO;
 import portal.model.Cluster;
+import portal.model.Director;
+import portal.model.Rol;
 
 
 /**
@@ -35,7 +38,9 @@ public class ClusterController {
 
 	@RequestMapping(value="/clusters/create", method=RequestMethod.GET)  
 	public ModelAndView create() {  
+
 		Cluster cluster = new Cluster();
+
 		return new ModelAndView("clusterNew", "Cluster", cluster);  
 	}
 	

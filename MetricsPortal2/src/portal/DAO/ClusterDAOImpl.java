@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import portal.model.Cluster;
+import portal.model.Director;
 
 
 @Repository
@@ -43,6 +44,7 @@ public class ClusterDAOImpl implements IportalDAO<Cluster, Serializable> {
         List<Cluster> listCluster = (List<Cluster>) sessionFactory.getCurrentSession()
                 .createCriteria(Cluster.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        
  
         return listCluster;
 	}

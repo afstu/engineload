@@ -3,6 +3,8 @@ package portal.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +22,7 @@ import portal.model.Rol;
 @Controller
 public class RolController {
 
-	@Autowired
+	@Resource(name="rolDao")
 	private IportalDAO<Rol, Serializable> portalDao;
 
 	@RequestMapping(value="/rollen", method=RequestMethod.GET)

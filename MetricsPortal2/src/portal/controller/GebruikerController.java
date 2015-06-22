@@ -1,7 +1,14 @@
 package portal.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import portal.DAO.IportalDAO;
 import portal.model.Gebruiker;
+import portal.model.Rol;
 
 /**
  * Handles requests for the application home page.
@@ -22,8 +30,12 @@ import portal.model.Gebruiker;
 @Controller
 public class GebruikerController {
 
-	@Autowired
+	@Resource(name="gebruikerDao")
 	private IportalDAO<Gebruiker, Serializable> portalDao;
+	
+	
+	@Resource(name="rolDao")
+	private IportalDAO<Rol, Serializable> portalRolDao;
 
 	@RequestMapping(value="/gebruikers", method=RequestMethod.GET)
 	public ModelAndView gebruikers() {
@@ -36,15 +48,32 @@ public class GebruikerController {
 
 	@RequestMapping(value="/gebruikers/create", method=RequestMethod.GET)  
 	public ModelAndView create() {  
+		List<Rol> rl = portalRolDao.list();
+		
+//		Map<String, Rol> rolList = new LinkedHashMap<String,Rol>();
+//		
+//		for (Rol r : rl) {
+//			rolList.put(r.getRolNaam(), r);
+//		}
+		
 		Gebruiker gebruiker = new Gebruiker();
-		return new ModelAndView("gebruikerNew", "gebruiker", gebruiker);  
+		ModelAndView model = new ModelAndView("gebruikerNew");
+		model.addObject("Gebruiker", gebruiker);
+		model.addObject("RolList", rl);
+		
+		return model;  
 	}
 	
 	@RequestMapping(value="/gebruikers/create", method=RequestMethod.POST)  
-	public ModelAndView create(@ModelAttribute("gebruiker") Gebruiker gebruiker) {  
-		
-		// TODO Validate gebruiker corp key tegen database!
-		
+	public ModelAndView create(@ModelAttribute("gebruiker") Gebruiker gebruiker)  {  
+//		public ModelAndView create(@ModelAttribute("gebruiker") Gebruiker gebruiker, @RequestParam("RolList") List<String> rolIds)  {		
+//		Set<Rol> sr = new HashSet<Rol>();
+//		gebruiker.setGebruikerRollen(sr);
+//		
+//		for (String id : rolIds) {
+//			long l = Long.parseLong(id);
+//			gebruiker.addRol(portalRolDao.read(l));
+//		}
 		
 		portalDao.create(gebruiker);
 		

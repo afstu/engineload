@@ -13,6 +13,7 @@
 				<tr>
 					<th>Rol Naam</th>
 					<th>Rol Beschrijving</th>
+					<th>Rol Gebruikers</th>
 					<th colspan=2>Rol Tools</th>
 				</tr>
 			</thead>
@@ -23,6 +24,12 @@
 					<tr>
 						<td>${Rol.getRolNaam()}</td>
 						<td>${Rol.getRolBeschrijving()}</td>
+						<td>
+						<c:forEach var="Gebruiker" items="${Rol.getRolGebruikers()}">
+							${Gebruiker.getCorpKey()}
+						</c:forEach>
+							
+						</td>
 						<c:choose>
 							<c:when test="${Rol.getId()=='0'}">
 								<td><form:form method='GET'
