@@ -103,10 +103,10 @@ public class GebruikerController {
 	public ModelAndView delete(@ModelAttribute("delete") String corpkey) {  
 		
 		if (corpkey.equalsIgnoreCase("admin")) {
-			return new ModelAndView ("redirect:/gebruikers");  
+			return new ModelAndView("redirect:/gebruikers");  
 		}
 		
 		portalDao.delete(corpkey);  
-		return new ModelAndView ("redirect:/gebruikers");  
+		return new ModelAndView("redirect:/gebruikers");  
 	} 
 }

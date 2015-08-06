@@ -56,6 +56,6 @@ public class GraphiteController {
 	@RequestMapping(value="/graphite/update", method=RequestMethod.POST)  
 	public ModelAndView update(@ModelAttribute("Graphite") Graphite graphite) {  
 		Graphite updateGraphite = portalDao.update(graphite);  
-		return new ModelAndView ("redirect:/graphite");  
+		return new ModelAndView("redirect:/graphite");  
 	} 
 }

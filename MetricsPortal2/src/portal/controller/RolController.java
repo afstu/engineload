@@ -76,6 +76,6 @@ public class RolController {
 		long longId = Long.parseLong((String) id);
 		portalDao.delete(longId);  
 
-		return new ModelAndView ("redirect:/rollen");  
+		return new ModelAndView("redirect:/rollen");  
 	} 
 }
