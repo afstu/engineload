@@ -43,14 +43,14 @@ public class ClusterController {
 
 		return new ModelAndView("clusterNew", "Cluster", cluster);  
 	}
-	
+
 	@RequestMapping(value="/clusters/create", method=RequestMethod.POST)  
 	public ModelAndView create(@ModelAttribute("Cluster") Cluster cluster) {  
-		
+
 		// TODO Validate cluster naan tegen database!
-		
+
 		portalDao.create(cluster);
-		
+
 		return new ModelAndView("clusterEnkel", "Cluster", cluster);  
 	}  
 
@@ -60,7 +60,7 @@ public class ClusterController {
 		Cluster readcluster = portalDao.read(longId);  
 		return new ModelAndView("clusterEnkel", "Cluster", readcluster);  
 	} 
-	
+
 	@RequestMapping(value="/clusters/update", method=RequestMethod.GET)  
 	public ModelAndView update(@ModelAttribute("update") Serializable id) {  
 		long longId = Long.parseLong((String) id);
@@ -78,6 +78,6 @@ public class ClusterController {
 	public ModelAndView delete(@RequestParam("delete") Serializable id) {  
 		long longId = Long.parseLong((String) id);
 		portalDao.delete(longId);  
-		return new ModelAndView ("redirect:/clusters");  
+		return new ModelAndView("redirect:/clusters");  
 	} 
 }
